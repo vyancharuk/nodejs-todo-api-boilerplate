@@ -1,0 +1,130 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "<docker-image-uri>:latest",
+      "essential": true,
+      "environment": [
+        {
+          "name": "DB_URI",
+          "value": "postgresql://postgres:postgres@db:5432/td"
+        },
+        {
+          "name": "REDIS_URI",
+          "value": "redis://@redis:6379"
+        },
+        {
+          "name": "JWT_SECRET",
+          "value": "23401_a1"
+        },
+        {
+          "name": "PORT",
+          "value": "8080"
+        }
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/app",
+          "sourceVolume": "app-api"
+        }
+      ],
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 80
+        }
+      ],
+      "links": ["db", "redis"],
+      "memory": 512,
+      "cpu": 1
+    },
+    {
+      "image": "postgres",
+      "name": "db",
+      "environment": [
+        {
+          "name": "POSTGRES_USER",
+          "value": "postgres"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "postgres"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "value": "td"
+        }
+      ],
+      "memory": 128,
+      "cpu": 1,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "hostPort": 5432
+        }
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/var/lib/postgresql/data",
+          "sourceVolume": "postgres-data"
+        }
+      ]
+    },
+    {
+      "image": "redis",
+      "name": "redis",
+      "environment": [
+        {
+          "name": "POSTGRES_USER",
+          "value": "postgres"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "postgres"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "value": "td"
+        }
+      ],
+      "entryPoint": ["redis-server", "--appendonly", "yes"],
+      "memory": 128,
+      "cpu": 1,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 6379,
+          "hostPort": 6379
+        }
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/data",
+          "sourceVolume": "redis-data"
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "host": {
+        "sourcePath": "/var/app/current/app"
+      },
+      "name": "app-api"
+    },
+    {
+      "host": {
+        "sourcePath": "/var/app/redis"
+      },
+      "name": "redis-data"
+    },
+    {
+      "host": {
+        "sourcePath": "/var/app/data"
+      },
+      "name": "postgres-data"
+    }
+  ]
+}

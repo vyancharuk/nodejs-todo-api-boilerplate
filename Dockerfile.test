@@ -1,0 +1,9 @@
+FROM node:12
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN npm cache clean --force --loglevel=error && npm install
+
+CMD ["/bin/bash","-c","chmod +x ./entrypoint.test.sh && ./entrypoint.test.sh"]

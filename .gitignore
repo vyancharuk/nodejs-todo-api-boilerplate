@@ -1,0 +1,12 @@
+/node_modules
+/dist
+
+.env*
+!.env.sample
+gcconfig.json
+src/examples
+samples
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

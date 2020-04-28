@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  td-app-test:
+    container_name: td-app-tests
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+
+    working_dir: /app
+    volumes:
+      - ./:/app
+
+    tty: true
+
+    environment:
+      DB_URI: postgresql://postgres:postgres@td-db-test:7432/td_test
+      REDIS_URI: redis://@redis-test:8379
+
+    env_file:
+      - .env
+
+    depends_on:
+      - td-db-test
+
+  td-db-test:
+    container_name: td-postgresql-test
+    image: postgres
+    restart: always
+    command: -p 7432 -c fsync=off
+    ports:
+      - 7432:7432
+
+    tmpfs:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: td_test

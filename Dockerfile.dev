@@ -1,0 +1,11 @@
+FROM node:12
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN npm cache clean --force --loglevel=error && npm install
+
+EXPOSE 8080
+
+CMD ["/bin/bash","-c","chmod +x ./entrypoint.dev.sh && ./entrypoint.dev.sh"]
