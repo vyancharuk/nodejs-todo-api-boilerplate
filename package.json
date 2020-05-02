@@ -13,10 +13,10 @@
     "migrate:prod": "npx knex migrate:latest --knexfile ./dist/config/knexfile.js",
     "seed": "npx knex seed:run --knexfile ./src/config/knexfile.ts",
     "seed:prod": "npx knex seed:run --knexfile ./dist/config/knexfile.js",
-    "docker:run": "docker-compose -f docker-compose.dev.yml --project-name=app up",
+    "docker:run": "docker-compose -f docker-compose.dev.yml --project-name=app up --renew-anon-volumes",
     "docker:build": "docker-compose -f docker-compose.dev.yml down && docker-compose -f docker-compose.dev.yml --project-name=app up -d --no-deps --build",
     "test": "NODE_ENV=test jest --forceExit --watchAll --detectOpenHandles --verbose --runInBand",
-    "docker:test": "docker-compose -f docker-compose.test.yml --project-name=app-tests up",
+    "docker:test": "docker-compose -f docker-compose.test.yml --project-name=app-tests up --renew-anon-volumes",
     "docker:test:build": "docker-compose -f docker-compose.test.yml down && docker-compose -f docker-compose.test.yml --project-name=app-tests up -d --no-deps --build"
   },
   "keywords": [
