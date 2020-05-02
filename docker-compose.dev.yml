@@ -17,8 +17,9 @@ services:
     ports:
       - '8080:8080'
     environment:
-      DB_URI: postgresql://postgres:postgres@td-db:6432/td
+      DB_URI: postgresql://postgres:postgres@td-db:6432/todo_db
       REDIS_URI: redis://@td-redis:7379
+      PORT: 8080
 
     env_file:
       - .env
@@ -31,17 +32,15 @@ services:
     container_name: td-postgresql
 
     image: postgres
-    restart: unless-stopped
+    build: .
+    restart: always
     command: -p 6432
     ports:
       - 6432:6432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: td
-
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+      POSTGRES_DB: todo_db
 
   td-redis:
     container_name: td-redis
@@ -56,4 +55,3 @@ services:
 
 volumes:
   redis-data:
-  postgres-data:
