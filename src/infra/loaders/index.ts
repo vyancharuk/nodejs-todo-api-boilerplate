@@ -4,9 +4,9 @@ import expressLoader from './express';
 import checkEnvs from './checkenvs';
 
 const init = async ({ expressApp }: { expressApp: Application }) => {
-  initDI();
-  expressLoader({ app: expressApp });
-  checkEnvs();
+  await initDI();
+  await expressLoader({ app: expressApp });
+  await checkEnvs();
 };
 
 export default { init };
