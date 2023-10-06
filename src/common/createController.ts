@@ -17,7 +17,7 @@ import { getStatusForError, defaultResponseHandler } from './utils';
 // according to clean architecture paramsCb serves as interactor - just pass params to service(use case)
 const createController = (
   serviceConstructor: interfaces.Newable<Operation>,
-  paramsCb: Function = () => {},
+  paramsCb: Function = () => { },
   resCb: Function = defaultResponseHandler,
   parentTransaction?: Knex.Transaction | undefined
 ) => async (req: Request, res: Response, next: NextFunction) => {
@@ -121,7 +121,7 @@ const createController = (
 
     return resCb(res, { result, code: HTTP_STATUS.OK }, req);
   } catch (ex) {
-    logger.error(`[${ctrlId}]createController:error ${ex} \r\n ${ex.stack}`);
+    logger.error(`[${ctrlId}]createController:error ${ex} \r\n ${(ex as any).stack}`);
 
     if (!parentTransaction && transaction !== undefined) {
       logger.warn(`[${ctrlId}]createController:transaction rollback`);
@@ -133,21 +133,21 @@ const createController = (
       );
     }
 
-    if (!(ex instanceof Error) && ex.msBeforeNext) {
+    if (!(ex instanceof Error) && (ex as any).msBeforeNext) {
       return resCb(res, {
         result: { error: 'TOO_MANY_REQUESTS' },
         code: HTTP_STATUS.TOO_MANY_REQUESTS,
         headers: [
           {
             name: 'Retry-After',
-            value: `${String(Math.round(ex.msBeforeNext / 1000)) || '1'}sec`,
+            value: `${String(Math.round((ex as any).msBeforeNext / 1000)) || '1'}sec`,
           },
         ],
       });
     }
 
     return resCb(res, {
-      result: { error: ex.toString() },
+      result: { error: (ex as any).toString() },
       code: getStatusForError(ex),
     });
 

@@ -7,8 +7,6 @@ import { addHeaders } from '../../../tests/utils';
 describe('Todos API', () => {
   const request = supertest(app);
 
-  let colorsTagId;
-
   it('Should correctly load user todos', async () => {
     const { ADMIN_JWT_TOKEN: jwtToken } = process.env;
 

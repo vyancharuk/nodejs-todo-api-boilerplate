@@ -1,7 +1,4 @@
 import { Knex } from '../../common/types';
-import knexfile from '../../config/knexfile';
-import appConfig from '../../config/app';
-
-const configOptions = knexfile[appConfig.env];
+import configOptions from '../../config/knexfile';
 
 export default Knex(configOptions);

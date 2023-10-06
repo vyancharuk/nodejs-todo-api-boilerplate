@@ -9,8 +9,6 @@ async function initLoaders() {
 
   logger.info('After loaders initialized');
 }
-(async () => {
-  await initLoaders();
-})();
+app['initLoaders'] = initLoaders;
 
 export default app;

@@ -19,16 +19,16 @@ jest.mock('../infra/integrations/aws.service', () => ({
 jest.mock('rate-limiter-flexible', () => ({
   RateLimiterRedis: function MockRateLimiterRedis() {
     return {
-      consume() {},
-      penalty() {},
-      reward() {},
-      block() {},
+      consume() { },
+      penalty() { },
+      reward() { },
+      block() { },
       get() {
         return null;
       },
-      set() {},
-      delete() {},
-      getKey() {},
+      set() { },
+      delete() { },
+      getKey() { },
     };
   },
 }));
@@ -36,6 +36,7 @@ jest.mock('rate-limiter-flexible', () => ({
 jest.setTimeout(10000);
 
 beforeAll(async () => {
+  await app['initLoaders']();
   // get tokens and validate using expect that setup goes properly
   const request = supertest(app);
 
