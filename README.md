@@ -6,6 +6,29 @@ This is an example of vertical slicing architecture for rest api using nodejs an
 
 Application provides API for user to view, create todos with image attachments,
 
+### Application structure
+
+```bash
+todo-api
+├─ package.json
+├─ src
+│  ├─modules (components)
+│  │ ├─ todos
+│  │ │ ├─ tests
+│  │ │ ├─ repository
+│  │ │ ├─ routes
+│  │ │ ├─ controllers
+│  │ │ ├─ *.service (business logic implementation)
+│  ├─ users
+│  ├─ ...
+│  │
+├─ infra (generic cross-component functionality)
+│  ├─ data (migrations, seeds)
+│  ├─ integrations (services responsible for integrations with 3rd party services - belong to repository layer)
+│  ├─ loaders
+│  ├─ middlewares
+```
+
 ## Before install
 
 Please make sure that you have docker installed [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
@@ -14,18 +37,17 @@ Please make sure that you have docker installed [https://docs.docker.com/engine/
 
 How to run locally (in dev mode):
 
-1. Copy `.env.sample` and rename it to `.env`, provide appropriate env var values. Part of the vars are defined in docker-compose file
-2. To prepare docker image
-   `npm run docker:build`
+1. Copy `.env.sample` and rename it to `.env`, providing appropriate env var values. Part of the vars are defined in docker-compose file
+2. Install dependencies locally `npm i`
 3. To start app
    `npm run docker:run`
 4. By default API server is available on `http://localhost:8080/`
 
 Migrations and seed runs automatically
 
-How to run tests in separate docker:
+How to run tests in separate docker locally:
 
-1. Prepare docker image `npm run docker:test:build`
+1. Install dependencies locally `npm i`
 2. Run api tests in separate docker `npm run docker:test`
 
 ## API Docs
