@@ -61,8 +61,7 @@ class UsersRepository extends BaseRepository {
     expires: Date,
     clientId: number
   ): Promise<User[]> {
-    const [user] = await this.dbAccess!('users')
-      .returning('*')
+    const [newUser] = await this.dbAccess('users')
       .insert([
         {
           user_name: userData.userName,
@@ -70,18 +69,19 @@ class UsersRepository extends BaseRepository {
           password: userData.password,
           role: userData.role,
         },
-      ]);
+      ])
+      .returning('*');
 
     await this.dbAccess!('user_refresh_tokens').insert([
       {
-        user_id: user.id,
+        user_id: newUser.id,
         client_id: clientId,
         refresh_token: userData.refreshToken,
         expires,
       },
     ]);
 
-    return user;
+    return newUser;
   }
 
   async upsertUserRefreshToken(

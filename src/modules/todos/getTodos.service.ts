@@ -25,7 +25,14 @@ class GetTodos extends Operation {
 
       return this._todosRepository.findAll(pageInd, pageSize, search);
     } catch (error) {
-      throw new Error(error);
+      logger.error('getAllTodos:error', error);
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
   }
 }

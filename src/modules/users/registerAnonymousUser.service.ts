@@ -60,7 +60,15 @@ class RegisterAnonymousUser extends Operation {
 
       return { user: _.omit(toCamelCase(user), 'password'), jwt, refreshToken };
     } catch (error) {
-      throw new Error(error);
+      logger.error('RegisterAnonymousUser:error', error);
+
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import type { Knex } from "knex";
 import { Application, Request, Response, NextFunction } from 'express';
 import { Container, injectable, inject, interfaces } from 'inversify';
 import toCamelCase from 'camelcase-keys';

@@ -1,9 +1,10 @@
+import _ from 'lodash';
+
 import { inject, injectable, Joi, toCamelCase } from '../../common/types';
 
 import Operation from '../../common/operation';
 import logger from '../../infra/loaders/logger';
 import { BINDINGS } from '../../common/constants';
-import _ from 'lodash';
 
 @injectable()
 class GetUser extends Operation {
@@ -24,7 +25,15 @@ class GetUser extends Operation {
 
       return _.omit(toCamelCase(user), ['password']);
     } catch (error) {
-      throw new Error(error);
+      logger.error('GetUser:error', error);
+
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
   }
 }

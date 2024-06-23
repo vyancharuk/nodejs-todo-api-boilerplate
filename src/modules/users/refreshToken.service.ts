@@ -54,7 +54,15 @@ class RefreshJWTToken extends Operation {
         logger.warn(`RefreshJWTToken user not found for token ${refreshToken}`);
       }
     } catch (error) {
-      throw new Error(error);
+      logger.error('RefreshJWTToken:error', error);
+
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
 
     return result;

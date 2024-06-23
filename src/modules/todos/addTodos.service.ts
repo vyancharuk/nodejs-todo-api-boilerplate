@@ -26,7 +26,8 @@ class AddTodos extends Operation {
 
       return this._todosRepository.addTodos(userId, todos);
     } catch (error) {
-      throw new Error(error);
+      logger.error(`AddTodos:error:${(error as Error).name}:${(error as Error).message}`);
+      throw error;
     }
   }
 }

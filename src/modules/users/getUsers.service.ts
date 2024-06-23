@@ -16,7 +16,15 @@ class GetUsers extends Operation {
 
       return this._usersRepository.findAll();
     } catch (error) {
-      throw new Error(error);
+      logger.error('GetUsers:error', error);
+
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
   }
 }

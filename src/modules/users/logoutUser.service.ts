@@ -1,8 +1,10 @@
+import _ from 'lodash';
+
 import { inject, injectable, Joi } from '../../common/types';
 import Operation from '../../common/operation';
 import useRateLimiter from '../../common/useRateLimiter';
 import { BINDINGS } from '../../common/constants';
-import _ from 'lodash';
+import logger from '../../infra/loaders/logger';
 
 @useRateLimiter('LOGOUT_USER_PER_HOUR_BY_IP', {
   points: 5, // 5 calls
@@ -34,7 +36,15 @@ class LogoutUser extends Operation {
 
       return { deletedTokensCount };
     } catch (error) {
-      throw new Error(error);
+      logger.error('LogoutUser:error', error);
+
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
   }
 }

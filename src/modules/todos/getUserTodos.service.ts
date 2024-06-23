@@ -29,7 +29,7 @@ class GetUserTodos extends Operation {
     try {
       logger.info(`GetUserTodos:execute userId=${userId}`);
 
-      const todos: Todo[] =
+      const todos =
         (await this._todosRepository.findUserTodos(
           userId,
           pageInd,
@@ -39,7 +39,14 @@ class GetUserTodos extends Operation {
 
       return todos.map((t) => toCamelCase(t));
     } catch (error) {
-      throw new Error(error);
+      logger.error('GetUserTodos:error', error);
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
   }
 }

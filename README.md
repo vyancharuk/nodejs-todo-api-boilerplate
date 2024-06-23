@@ -12,7 +12,7 @@ Application provides API for user to view, create todos with image attachments,
 todo-api
 ├─ package.json
 ├─ src
-│  ├─modules (components)
+│  ├─modules (domain components)
 │  │ ├─ todos
 │  │ │ ├─ tests
 │  │ │ ├─ repository

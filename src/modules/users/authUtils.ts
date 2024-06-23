@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 // import argon2 from 'argon2';
 import crypto from 'crypto';
 import appConfig from '../../config/app';
@@ -7,7 +7,7 @@ import { User } from './types';
 
 const generateJWT = (
   user: User,
-  clientId: number = appConfig.defaultClientId
+  clientId: string = appConfig.defaultClientId
 ) => {
   // TODO: switch to assymetric alg which uses RSA encryption
   // by default it uses symmetric alg HMAC

@@ -1,6 +1,6 @@
-import * as Knex from 'knex';
+import { Knex } from '../../../common/types';
 import { v4 as uuid } from 'uuid';
-import nanoid from 'nanoid';
+import { nanoid } from 'nanoid';
 import { hashPassword } from '../../../modules/users/authUtils';
 import appConfig from '../../../config/app';
 

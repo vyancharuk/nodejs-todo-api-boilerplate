@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import { inject, injectable, Joi, toCamelCase } from '../../common/types';
 import Operation from '../../common/operation';
 import useRateLimiter from '../../common/useRateLimiter';
 import { hashPassword, generateJWT, generateRefreshToken } from './authUtils';
 import { BINDINGS } from '../../common/constants';
-import _ from 'lodash';
+import logger from '../../infra/loaders/logger';
 import appConfig from '../../config/app';
 
 @useRateLimiter('LOGIN_USER_PER_HOUR_BY_IP', {
@@ -60,7 +61,15 @@ class LoginUser extends Operation {
         };
       }
     } catch (error) {
-      throw new Error(error);
+      logger.error('LoginUser:error', error);
+
+      if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
     }
 
     return result;

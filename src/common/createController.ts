@@ -1,18 +1,11 @@
-import logger from '../infra/loaders/logger';
-import { container } from '../infra/loaders/diContainer';
-import {
-  Request,
-  Response,
-  NextFunction,
-  Knex,
-  interfaces,
-  HTTP_STATUS,
-} from './types';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 
-import Operation from './operation';
+import { container } from '../infra/loaders/diContainer';
+import logger from '../infra/loaders/logger';
 import { BINDINGS } from './constants';
-import { getStatusForError, defaultResponseHandler } from './utils';
+import Operation from './operation';
+import { HTTP_STATUS, interfaces, Knex, NextFunction, Request, Response } from './types';
+import { defaultResponseHandler, getStatusForError } from './utils';
 
 // according to clean architecture paramsCb serves as interactor - just pass params to service(use case)
 const createController = (
@@ -29,6 +22,7 @@ const createController = (
   );
 
   let transaction: Knex.Transaction | undefined;
+  // TODO: remove remoteAddress
   const ipAddr = req.connection.remoteAddress;
 
   try {
