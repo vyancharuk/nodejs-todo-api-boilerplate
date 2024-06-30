@@ -4,6 +4,8 @@ import { Request } from '../../common/types';
 import getAllTodos from './getTodos.service';
 import GetUserTodos from './getUserTodos.service';
 import AddTodos from './addTodos.service';
+import UpdateTodo from './updateTodo.service';
+import RemoveTodo from './removeTodo.service';
 
 export default {
   getAllTodos: createController(getAllTodos, (req: Request) => ({
@@ -20,5 +22,14 @@ export default {
   addTodos: createController(AddTodos, (req: Request) => ({
     userId: req['currentUser'].id,
     todos: req.body.todos,
+  })),
+  updateTodo: createController(UpdateTodo, (req: Request) => ({
+    userId: req['currentUser'].id,
+    todoId: req.params.id,
+    content: req.body.content,
+  })),
+  removeTodo: createController(RemoveTodo, (req: Request) => ({
+    userId: req['currentUser'].id,
+    todoId: req.params.id,
   })),
 };

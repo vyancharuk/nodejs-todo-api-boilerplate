@@ -30,4 +30,6 @@ export default (
   );
 
   route.post('/add', isAuth, attachCurrentUser, todosController.addTodos);
+  route.put('/:id', isAuth, attachCurrentUser, todosController.updateTodo);
+  route.delete('/:id', isAuth, attachCurrentUser, todosController.removeTodo);
 };

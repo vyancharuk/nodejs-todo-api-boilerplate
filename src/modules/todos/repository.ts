@@ -1,6 +1,6 @@
+import BaseRepository from '../../common/baseRepository';
 import { injectable } from '../../common/types';
 import { Todo } from './types';
-import BaseRepository from '../../common/baseRepository';
 
 @injectable()
 class TodosRepository extends BaseRepository {
@@ -35,6 +35,22 @@ class TodosRepository extends BaseRepository {
     return this.dbAccess('todos')
       .insert(todos.map((content) => ({ content, user_id: userId })))
       .returning('id');
+  }
+
+  async updateTodo(todoId: string, userId: string, content: string) {
+    return this.dbAccess('todos')
+      .update({
+        content,
+      })
+      .where('id', todoId)
+      .andWhere('user_id', userId);
+  }
+
+  async removeTodo(todoId: string, userId: string) {
+    return this.dbAccess('todos')
+      .where('id', todoId)
+      .andWhere('user_id', userId)
+      .del();
   }
 }
 

@@ -2,9 +2,9 @@
 
 ## Description
 
-This is an example of vertical slicing architecture for rest api using nodejs and typescript [https://markhneedham.com/blog/2012/02/20/coding-packaging-by-vertical-slice/](https://markhneedham.com/blog/2012/02/20/coding-packaging-by-vertical-slice/). Comparing to horizontal slicing (layered architecture) it has less model code gap - easy to understand modeled domain. Implementation also aligned with rules of Clean Architecture by Uncle Bob [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+This project is a simple Node.js boilerplate using TypeScript and Docker. It demonstrates vertical slicing architecture for a REST API, as detailed here: [https://markhneedham.com/blog/2012/02/20/coding-packaging-by-vertical-slice/](https://markhneedham.com/blog/2012/02/20/coding-packaging-by-vertical-slice/). Unlike horizontal slicing (layered architecture), vertical slicing reduces the model code gap, making the modeled domain easier to understand. The implementation also follows the principles of Clean Architecture by Uncle Bob: [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
-Application provides API for user to view, create todos with image attachments,
+The application provides APIs for users to view, create, update, and delete todos (CRUD operations)
 
 ### Application structure
 
@@ -37,18 +37,17 @@ Please make sure that you have docker installed [https://docs.docker.com/engine/
 
 How to run locally (in dev mode):
 
-1. Copy `.env.sample` and rename it to `.env`, providing appropriate env var values. Part of the vars are defined in docker-compose file
+1. Copy `.env.sample` and rename it to `.env`, providing the appropriate environment variable values. Some of the variables are defined in the docker-compose file
 2. Install dependencies locally `npm i`
-3. To start app
-   `npm run docker:run`
-4. By default API server is available on `http://localhost:8080/`
+3. Start the app using `npm run docker:run`
+4. By default, the API server is available at `http://localhost:8080/`
 
 Migrations and seed runs automatically
 
-How to run tests in separate docker locally:
+How to run tests in separate docker containers locally:
 
 1. Install dependencies locally `npm i`
-2. Run api tests in separate docker `npm run docker:test`
+2. Run API tests in separate docker containers `npm run docker:test`
 
 ## API Docs
 
