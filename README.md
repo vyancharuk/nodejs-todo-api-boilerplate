@@ -1,4 +1,6 @@
-# Todos API boilerplate project
+# Node.js Typescript Template Project
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) ![node](https://img.shields.io/badge/node-v14.21.3-green)
 
 ## Description
 
@@ -42,7 +44,7 @@ How to run locally (in dev mode):
 3. Start the app using `npm run docker:run`
 4. By default, the API server is available at `http://localhost:8080/`
 
-Migrations and seed runs automatically
+Migrations and seed run automatically
 
 How to run tests in separate docker containers locally:
 

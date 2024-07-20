@@ -34,6 +34,10 @@ class CustomError extends Error {
     this.name = name;
     this.message = message;
     this.status = status;
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, CustomError);
+    }
   }
 }
 
