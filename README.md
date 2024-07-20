@@ -1,6 +1,6 @@
 # Node.js Typescript Template Project
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) ![node](https://img.shields.io/badge/node-v14.21.3-green)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-green) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue)
 
 ## Description
 
