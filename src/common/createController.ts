@@ -23,11 +23,9 @@ const createController =
     parentTransaction?: Knex.Transaction | undefined
   ) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const ctrlId = Date.now() % Math.pow(10, 6);
-
     // 1. check jwt token if it is already logged out
     logger.info(
-      `[${ctrlId}]createController:start auth=${!!req.headers['authorization']}`
+      `createController:start auth=${!!req.headers['authorization']}`
     );
 
     let transaction: Knex.Transaction | undefined;
@@ -43,7 +41,7 @@ const createController =
         const tokenExpired = await memoryStorage.getValue(jwtSign);
 
         logger.info(
-          `[${ctrlId}]createController:check expired jwtSign:${jwtSign} tokenExpired=${tokenExpired}`
+          `createController:check expired jwtSign:${jwtSign} tokenExpired=${tokenExpired}`
         );
 
         if (tokenExpired) {
@@ -71,28 +69,28 @@ const createController =
       }
 
       logger.info(
-        `[${ctrlId}]createController:before consume rate limiters count=${currentRateLimiters.length}`
+        `createController:before consume rate limiters count=${currentRateLimiters.length}`
       );
 
       // 1.2 update rateLimiters
       await Promise.all(currentRateLimiters.map((tr) => tr.consume(ipAddr)));
 
       // 2. process use case logic
-      logger.info(`[${ctrlId}]createController:init`);
+      logger.info(`createController:init`);
 
       // create transaction if needed, and share it between all repositories used by controller
       if (!parentTransaction && serviceConstructor['useTransaction']) {
-        logger.info(`[${ctrlId}]createController:start:transaction`);
+        logger.info(`createController:start:transaction`);
 
         const db: Knex = container.get<Knex>(BINDINGS.DbAccess);
         transaction = await db.transaction();
       } else if (parentTransaction) {
-        logger.info(`[${ctrlId}]createController:use:parent:transaction`);
+        logger.info(`createController:use:parent:transaction`);
         transaction = parentTransaction;
       }
 
       logger.info(
-        `[${ctrlId}]createController:use transaction=${!!transaction}`
+        `createController:use transaction=${!!transaction}`
       );
 
       const service: Operation = container.resolve(serviceConstructor);
@@ -105,7 +103,7 @@ const createController =
         repositories.forEach((repo) => repo.setDbAccess(transaction!));
 
         logger.info(
-          `[${ctrlId}]createController:repositories=${repositories.length}`
+          `createController:repositories=${repositories.length}`
         );
       }
 
@@ -113,12 +111,12 @@ const createController =
       const result = await service.run(params);
 
       if (!parentTransaction && transaction !== undefined) {
-        logger.info(`[${ctrlId}]createController:transaction commit`);
+        logger.info(`createController:transaction commit`);
 
         await transaction.commit();
       }
 
-      logger.info(`[${ctrlId}]createController:completed`);
+      logger.info(`createController:completed`);
 
       if (!resCb) {
         return res.json({ result }).status(HTTP_STATUS.OK);
@@ -127,16 +125,16 @@ const createController =
       return resCb(res, { result, code: HTTP_STATUS.OK }, req);
     } catch (ex) {
       logger.error(
-        `[${ctrlId}]createController:error ${ex} \r\n ${(ex as any).stack}`
+        `createController:error ${ex} \r\n ${(ex as any).stack}`
       );
 
       if (!parentTransaction && transaction !== undefined) {
-        logger.warn(`[${ctrlId}]createController:transaction rollback`);
+        logger.warn(`createController:transaction rollback`);
 
         await transaction.rollback();
       } else if (parentTransaction) {
         logger.warn(
-          `[${ctrlId}]createController:skip parentTransaction rollback`
+          `createController:skip parentTransaction rollback`
         );
       }
 

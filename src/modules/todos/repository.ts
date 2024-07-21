@@ -1,5 +1,6 @@
 import BaseRepository from '../../common/baseRepository';
 import { injectable } from '../../common/types';
+import logger from '../../infra/loaders/logger';
 import { Todo } from './types';
 
 @injectable()
@@ -10,7 +11,7 @@ class TodosRepository extends BaseRepository {
     search: string
   ): Promise<Todo[]> {
     const qb = this.dbAccess!('todos').returning('*');
-
+    logger.info('TodosRepository:findAll');
     return this.wrapWithPaginationAndSearch(qb, pageInd, pageSize, [
       { field: 'content', search },
     ]);

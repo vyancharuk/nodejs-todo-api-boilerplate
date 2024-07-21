@@ -21,11 +21,11 @@ class GetTodos extends Operation {
     const { pageSize = 100, pageInd = 0, search = '' } = validatedUserData;
 
     try {
-      logger.info(`getAllTodos:execute`);
+      logger.info(`GetTodos:execute`);
 
       return this._todosRepository.findAll(pageInd, pageSize, search);
     } catch (error) {
-      logger.error('getAllTodos:error', error);
+      logger.error('GetTodos:error', error);
       if (typeof error === 'string') {
         throw new Error(error);
       } else if (error instanceof Error) {

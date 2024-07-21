@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import compression from 'compression';
+import rTracer from 'cls-rtracer';
 
 import {
   Application,
@@ -38,6 +39,7 @@ export default ({ app }: { app: Application }) => {
   app.use(morgan('combined'));
   app.use(bodyParser.urlencoded({ extended: false }));
 
+  app.use(rTracer.expressMiddleware());
   // init API routes
   app.use(config.api.prefix, routes());
 

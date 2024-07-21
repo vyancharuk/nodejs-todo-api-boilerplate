@@ -1,15 +1,17 @@
 import winston from 'winston';
+import rTracer from 'cls-rtracer';
 import config from '../../config/app';
 
 const transports: winston.transports.ConsoleTransportInstance[] = [];
 
 const customFormat = winston.format.printf(
-  ({ level, message }) => {
-    return `${level}: ${message}`;
+  ({ level, message, timestamp }) => {
+    const traceId = rTracer.id() || '<trace-id>';
+    return `${level} ${timestamp} [${traceId}] ${message}`;
   }
 );
 
-if (config.env !== 'dev') {
+if (config.env === 'test') {
   transports.push(new winston.transports.Console());
 } else {
   transports.push(

@@ -31,6 +31,16 @@ todo-api
 │  ├─ middlewares
 ```
 
+### Logging and tracing
+
+The application uses the `winston` logger for effective logging and the `cls-rtracer` package to provide cross-layer trace IDs. As a result, logs related to the same request but from different layers (service, repository, controller) are outputted with the same trace ID without any extra implementation. 
+``Console Output``:
+
+    info 07/21 15:26:16:742 [928aa440-4775-11ef-a88a-7b1736b24e71] GetTodos:execute
+    info 07/21 15:26:16:743 [928aa440-4775-11ef-a88a-7b1736b24e71] TodosRepository:findAll
+    info 07/21 15:26:16:806 [928aa440-4775-11ef-a88a-7b1736b24e71] createController:completed
+
+
 ## Before install
 
 Please make sure that you have docker installed [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
