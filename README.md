@@ -66,4 +66,6 @@ How to run tests in separate docker containers locally:
 
 Here is Postman collection to work with API locally:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/f59aee4039af3634b7e7)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/429508-4b29a48c-b45d-4d09-912f-83090fd70b5e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D429508-4b29a48c-b45d-4d09-912f-83090fd70b5e%26entityType%3Dcollection%26workspaceId%3Dcb523e15-e316-4367-a52b-6caab455c64a)
+
+
