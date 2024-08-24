@@ -1,4 +1,4 @@
-import { inject, injectable, Joi, toCamelCase } from '../../common/types';
+import { inject, injectable, toCamelCase, z } from '../../common/types';
 import shortid from 'shortid';
 import Operation from '../../common/operation';
 import useTransaction from '../../common/useTransaction';
@@ -18,9 +18,9 @@ import _ from 'lodash';
 })
 @injectable()
 class RegisterAnonymousUser extends Operation {
-  static validationRules = {
-    clientId: Joi.string().max(100),
-  };
+  static validationRules = z.object({
+    clientId: z.string().max(200).optional(), // Validates as an optional string
+  });
 
   @inject(BINDINGS.UsersRepository)
   private _usersRepository!: UsersRepository;

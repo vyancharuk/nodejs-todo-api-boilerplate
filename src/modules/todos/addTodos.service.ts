@@ -1,4 +1,4 @@
-import { inject, injectable, Joi } from '../../common/types';
+import { inject, injectable, z } from '../../common/types';
 
 import Operation from '../../common/operation';
 import logger from '../../infra/loaders/logger';
@@ -10,10 +10,10 @@ import useTransaction from '../../common/useTransaction';
 @useTransaction()
 @injectable()
 class AddTodos extends Operation {
-  static validationRules = {
-    userId: Joi.string().uuid().required(),
-    todos: Joi.array().min(1).items(Joi.string().min(2).max(200)).required(),
-  };
+  static validationRules = z.object({
+    userId: z.string().uuid().min(1), // UUID and required
+    todos: z.array(z.string().min(2).max(200)).min(1), // array with at least one string, each string has a min length of 2 and max of 200
+  });
 
   @inject(BINDINGS.TodosRepository)
   private _todosRepository: any;
@@ -22,11 +22,13 @@ class AddTodos extends Operation {
     const { userId, todos } = validatedUserData;
 
     try {
-      logger.info(`AddTodos:execute`);
+      logger.info(`AddTodos:execute:userId=${userId}:todos=${JSON.stringify(todos)}`);
 
       return this._todosRepository.addTodos(userId, todos);
     } catch (error) {
-      logger.error(`AddTodos:error:${(error as Error).name}:${(error as Error).message}`);
+      logger.error(
+        `AddTodos:error:${(error as Error).name}:${(error as Error).message}`
+      );
       throw error;
     }
   }

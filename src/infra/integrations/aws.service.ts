@@ -1,5 +1,6 @@
 import S3 from 'aws-sdk/clients/s3';
 import appConfig from '../../config/app';
+import logger from '../../infra/loaders/logger';
 
 class AWSService {
   private _bucket: S3;
@@ -17,7 +18,7 @@ class AWSService {
     if (!key || !fileStream) {
       throw new Error('folder and filePath are required');
     }
-
+    logger.info('AWSService:saveToS3:key=', key);
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: appConfig.awsBucket,
@@ -29,10 +30,10 @@ class AWSService {
 
       this._bucket.upload(params, function (err, data) {
         if (err) {
-          console.log('There was an error uploading your file: ', err);
+          logger.info('AWSService:saveToS3:error uploading your file: ', err);
           return reject(err);
         }
-        console.log('Successfully uploaded file.', data.Location);
+        logger.info('AWSService:saveToS3:successfully uploaded file', data.Location);
 
         return resolve(data.Location);
       });

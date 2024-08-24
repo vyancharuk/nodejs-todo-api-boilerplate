@@ -1,8 +1,8 @@
-import type { Knex } from "knex";
+import type { Knex } from 'knex';
 import { Application, Request, Response, NextFunction } from 'express';
 import { Container, injectable, inject, interfaces } from 'inversify';
 import toCamelCase from 'camelcase-keys';
-import Joi from '@hapi/joi';
+import { z } from 'zod';
 import Operation from './operation';
 import { User } from '../modules/users/types';
 import * as HTTP_STATUS from 'http-status';
@@ -48,7 +48,7 @@ export {
   Request,
   Response,
   NextFunction,
-  Joi,
+  z,
   Knex,
   Container,
   interfaces,

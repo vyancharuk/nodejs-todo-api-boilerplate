@@ -1,4 +1,4 @@
-import { inject, injectable, Joi, toCamelCase } from '../../common/types';
+import { inject, injectable, toCamelCase, z } from '../../common/types';
 import Operation from '../../common/operation';
 import useRateLimiter from '../../common/useRateLimiter';
 import { generateJWT } from './authUtils';
@@ -14,19 +14,17 @@ import _ from 'lodash';
 })
 @injectable()
 class RefreshJWTToken extends Operation {
-  static validationRules = {
-    refreshToken: Joi.string().required(),
-    clientId: Joi.string(),
-  };
+  static validationRules = z.object({
+    refreshToken: z.string().min(1), // Validates as a required string
+    clientId: z.string().optional(), // Validates as an optional string
+  });
 
   @inject(BINDINGS.UsersRepository) private _usersRepository: any;
 
   async execute(validatedUserData: any) {
     let result = { jwt: null };
-    const {
-      refreshToken,
-      clientId = appConfig.defaultClientId,
-    } = validatedUserData;
+    const { refreshToken, clientId = appConfig.defaultClientId } =
+      validatedUserData;
     if (!refreshToken) {
       throw new Error('EMPTY_REFRESH_TOKEN');
     }

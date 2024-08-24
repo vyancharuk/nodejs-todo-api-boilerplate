@@ -11,6 +11,7 @@ import RefreshToken from './refreshToken.service';
 import { isErrorCode } from '../../common/utils';
 
 export default {
+  // use composite controller to include get 
   registerAnonymous: createController(
     RegisterUser,
     async (req: Request, res: Response) => req.body,

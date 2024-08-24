@@ -107,7 +107,7 @@ const createController =
         );
       }
 
-      const params = paramsCb(req, res);
+      const params = await paramsCb(req, res);
       const result = await service.run(params);
 
       if (!parentTransaction && transaction !== undefined) {

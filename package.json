@@ -55,7 +55,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "aws-sdk": "^2.1643.0",
     "camelcase-keys": "^6.2.1",
     "cls-rtracer": "^2.6.3",
@@ -79,6 +78,7 @@
     "shortid": "^2.2.15",
     "to-readable-stream": "^4.0.0",
     "uuid": "^10.0.0",
-    "winston": "^3.13.0"
+    "winston": "^3.13.0",
+    "zod": "^3.23.8"
   }
 }

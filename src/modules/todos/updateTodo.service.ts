@@ -1,6 +1,6 @@
 import { BINDINGS } from '../../common/constants';
 import Operation from '../../common/operation';
-import { inject, injectable, Joi } from '../../common/types';
+import { inject, injectable, z } from '../../common/types';
 import useTransaction from '../../common/useTransaction';
 import logger from '../../infra/loaders/logger';
 import { Todo } from './types';
@@ -8,11 +8,11 @@ import { Todo } from './types';
 @useTransaction()
 @injectable()
 class UpdateTodo extends Operation {
-  static validationRules = {
-    userId: Joi.string().uuid().required(),
-    todoId: Joi.string().uuid().required(),
-    content: Joi.string().min(2).max(200).required(),
-  };
+  static validationRules = z.object({
+    userId: z.string().uuid().min(1), // Validates as a required UUID string
+    todoId: z.string().uuid().min(1), // Validates as a required UUID string
+    content: z.string().min(2).max(200), // String between 2 and 200 characters, required by default
+  });
 
   @inject(BINDINGS.TodosRepository)
   private _todosRepository: any;

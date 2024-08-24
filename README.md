@@ -8,6 +8,19 @@ This project is a simple Node.js boilerplate using TypeScript and Docker. It dem
 
 The application provides APIs for users to view, create, update, and delete todos (CRUD operations)
 
+## Features
+
+- Vertical slicing architecture based on **DDD & MVC** principles
+- Service input validation using **ZOD**
+- Decoupling application components through dependency injection using **InversifyJS**
+- Integration and E2E testing with **Supertest**
+- **Docker-compose** simplifies multi-service setup, running application, DB, and Redis in isolated docker containers easily
+- Simple DB transaction management with **Knex**
+- Multi-layer trace ID support for logging with **winston**
+- Support graceful shutdown for the **express.js** server
+- Auto-reload on save using **ts-node-dev**
+
+
 ### Application structure
 
 ```bash
@@ -33,7 +46,7 @@ todo-api
 
 ### Logging and tracing
 
-The application uses the `winston` logger for effective logging and the `cls-rtracer` package to provide cross-layer trace IDs. As a result, logs related to the same request but from different layers (service, repository, controller) are outputted with the same trace ID without any extra implementation. 
+The application uses the `winston` logger for effective logging and implements cross-layer trace IDs in the winston wrapper output logic. As a result, logs related to the same request but from different layers (service, repository, controller) are outputted with the same trace ID without any extra implementation. 
 
 ``Console Output``:
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { inject, injectable, Joi } from '../../common/types';
+import { inject, injectable, z } from '../../common/types';
 import Operation from '../../common/operation';
 import useRateLimiter from '../../common/useRateLimiter';
 import { BINDINGS } from '../../common/constants';
@@ -13,10 +13,10 @@ import logger from '../../infra/loaders/logger';
 })
 @injectable()
 class LogoutUser extends Operation {
-  static validationRules = {
-    userId: Joi.string().uuid().required(),
-    jwt: Joi.string().required(),
-  };
+  static validationRules = z.object({
+    userId: z.string().uuid().min(1), // Validates as a required UUID string
+    jwt: z.string(), // Validates as a required string
+  });
 
   @inject(BINDINGS.UsersRepository)
   private _usersRepository: any;
@@ -26,9 +26,8 @@ class LogoutUser extends Operation {
 
     try {
       const jwtSign = jwt.split('.')[2];
-      const deletedTokensCount = await this._usersRepository.delRefreshTokenForUser(
-        userId
-      );
+      const deletedTokensCount =
+        await this._usersRepository.delRefreshTokenForUser(userId);
 
       // clear userId - user map
       await this._memoryStorage.delValue(userId);

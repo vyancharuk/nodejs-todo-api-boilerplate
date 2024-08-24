@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { inject, injectable, Joi, toCamelCase } from '../../common/types';
+import { inject, injectable, toCamelCase, z } from '../../common/types';
 import Operation from '../../common/operation';
 import useRateLimiter from '../../common/useRateLimiter';
 import { hashPassword, generateJWT, generateRefreshToken } from './authUtils';
@@ -14,11 +14,11 @@ import appConfig from '../../config/app';
 })
 @injectable()
 class LoginUser extends Operation {
-  static validationRules = {
-    password: Joi.string().max(100).required(),
-    username: Joi.string().max(100),
-    email: Joi.string().max(100),
-  };
+  static validationRules = z.object({
+    password: z.string().max(100).min(1), // Required string with a maximum length of 100
+    username: z.string().max(100).optional(), // Optional string with a maximum length of 100
+    email: z.string().max(100).optional(), // Optional string with a maximum length of 100
+  });
 
   @inject(BINDINGS.UsersRepository)
   private _usersRepository: any;

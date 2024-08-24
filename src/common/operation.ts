@@ -1,4 +1,4 @@
-import { injectable, Joi, inject } from './types';
+import { injectable, inject } from './types';
 import BaseRepository from './baseRepository';
 import { BINDINGS } from './constants';
 
@@ -24,21 +24,18 @@ class BaseOperation {
   }
 
   validate(params: any): any {
-    // read static property value
-    const schema = Joi.object(this.constructor['validationRules'] || {});
-    // TODO: include by default validation for userId for all not public routes
-    // include userData loaded from redis or db
-    return schema.validate(params);
+    // read static ZOD property and parse
+    return this.constructor['validationRules']?.safeParse(params);
   }
 
   // empty base implementation
   async execute(params: any): Promise<any> {}
 
   async run(params: any): Promise<any> {
-    const { value: validated, error } = this.validate(params);
+    const { data: validated, error } = this.validate(params);
 
     if (error) {
-      throw new Error(error);
+      throw new Error(JSON.stringify(error.format()));
     }
 
     const { userId } = validated || {};

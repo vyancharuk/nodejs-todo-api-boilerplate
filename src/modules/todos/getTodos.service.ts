@@ -1,4 +1,4 @@
-import { inject, injectable, Joi } from '../../common/types';
+import { inject, injectable, z } from '../../common/types';
 
 import Operation from '../../common/operation';
 import logger from '../../infra/loaders/logger';
@@ -8,11 +8,18 @@ import { Todo } from './types';
 
 @injectable()
 class GetTodos extends Operation {
-  static validationRules = {
-    search: Joi.string().max(50).allow('', null).alphanum(),
-    pageSize: Joi.number().integer().min(1).max(100),
-    pageInd: Joi.number().integer().min(0).max(10000),
-  };
+  static validationRules = z.object({
+    search: z
+      .string()
+      .max(50)
+      .optional()
+      .or(z.literal('').or(z.null()))
+      .refine((val) => /^[a-zA-Z0-9]*$/.test(val || ''), {
+        message: 'Must be alphanumeric',
+      }), // Allows empty string, null, and only alphanumeric characters
+    pageSize: z.number().int().min(1).max(100).optional(), // Integer between 1 and 100
+    pageInd: z.number().int().min(0).max(10000).optional(), // Integer between 0 and 10000
+  });
 
   @inject(BINDINGS.TodosRepository)
   private _todosRepository: any;
