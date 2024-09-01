@@ -80,19 +80,18 @@ List of available routes:
 `POST /api/signup` - register\
 `POST /api/signin` - login\
 `POST /api/jwt/refresh` - refresh auth token\
-`POST /api/signout` - logout\
-
+`POST /api/signout` - logout
 
 **User routes**:\
 `GET /v1/users` - get all users (requires admin access rights)\
-`GET /v1/users/me` - get current user\
+`GET /v1/users/me` - get current user
 
 **Todo routes**:\
 `POST /api/todos/add` - create a todo\
 `PUT /api/todos/:todoId` - update todo\
 `GET /api/todos/my` - get all users' todos\
-`DELETE /api/todos/:todoId` - delete user
-`GET /api/todos` - get all created todos (requires admin access rights)\
+`DELETE /api/todos/:todoId` - delete user\
+`GET /api/todos` - get all created todos (requires admin access rights)
 
 
 ### Modules
