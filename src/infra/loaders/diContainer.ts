@@ -13,14 +13,7 @@ import logger from './logger';
 
 function diLogger(planAndResolve: interfaces.Next): interfaces.Next {
   return (args: interfaces.NextArgs) => {
-    let start = new Date().getTime();
-    let result = planAndResolve(args);
-    let end = new Date().getTime();
-
-    logger.info(
-      `DI:resolve:info:${args.serviceIdentifier.toString()}:  ${end - start}ms`
-    );
-    return result;
+    return planAndResolve(args);
   };
 }
 

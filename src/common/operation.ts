@@ -24,8 +24,11 @@ class BaseOperation {
   }
 
   validate(params: any): any {
-    // read static ZOD property and parse
-    return this.constructor['validationRules']?.safeParse(params);
+    if (this.constructor['validationRules']) {
+      // read static ZOD property and parse
+      return this.constructor['validationRules'].safeParse(params);
+    }
+    return { data: null, error: null };
   }
 
   // empty base implementation

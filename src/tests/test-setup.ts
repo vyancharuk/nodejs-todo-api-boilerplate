@@ -33,6 +33,19 @@ jest.mock('rate-limiter-flexible', () => ({
   },
 }));
 
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => ({
+    connect: jest.fn(),
+    quit: jest.fn(),
+    set: jest.fn(),
+    get: jest.fn(),
+  }));
+});
+
+jest.mock('cls-rtracer', () => ({
+  expressMiddleware: () => (_req, _res, next) => next(),
+}));
+
 jest.setTimeout(10000);
 
 beforeAll(async () => {

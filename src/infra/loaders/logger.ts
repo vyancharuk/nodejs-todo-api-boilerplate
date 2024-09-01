@@ -6,7 +6,7 @@ const transports: winston.transports.ConsoleTransportInstance[] = [];
 
 const customFormat = winston.format.printf(
   ({ level, message, timestamp }) => {
-    const traceId = rTracer.id() || '<trace-id>';
+    const traceId = rTracer.id() || 'NO-TRACE-ID';
     return `${level} ${timestamp} [${traceId}] ${message}`;
   }
 );
