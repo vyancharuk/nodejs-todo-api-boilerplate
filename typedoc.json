@@ -1,0 +1,35 @@
+{
+  "entryPoints": [
+    "src/modules/**/routes.ts",
+    "src/modules/**/controllers.ts",
+    "src/modules/**/*.service.ts",
+    "src/common/createController.ts",
+    "src/common/createRoutes.ts",
+    "src/common/operation.ts",
+    "src/common/baseRepository.ts"
+  ],
+  "out": "docs",
+  "includeVersion": true,
+  "exclude": [
+    "**/node_modules/**",
+    "**/tests/**",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "excludePrivate": false,
+  "excludeProtected": false,
+  "excludeInternal": false,
+  "excludeNotDocumented": false,
+  "tsconfig": "tsconfig.json",
+  "readme": "README.md",
+  "name": "Todo API Documentation",
+  "hideGenerator": true,
+  "entryPointStrategy": "expand",
+  "visibilityFilters": {
+    "protected": true,
+    "private": true,
+    "inherited": true,
+    "external": true
+  },
+  "treatWarningsAsErrors": false
+}

@@ -6,8 +6,13 @@ import logger from '../../infra/loaders/logger';
 import { BINDINGS } from '../../common/constants';
 import { Todo } from './types';
 
+/**
+ * @class GetUserTodos
+ *
+ * Service implementation to load all user todos
+ */
 @injectable()
-class GetUserTodos extends Operation {
+export class GetUserTodos extends Operation {
   static validationRules = z.object({
     userId: z.string().uuid().min(1), // UUID and required (nonempty)
     search: z
@@ -57,4 +62,3 @@ class GetUserTodos extends Operation {
   }
 }
 
-export default GetUserTodos;

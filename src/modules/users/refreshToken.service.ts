@@ -7,13 +7,20 @@ import appConfig from '../../config/app';
 import logger from '../../infra/loaders/logger';
 import _ from 'lodash';
 
+
+/**
+ * @class RefreshToken
+ * 
+ * Handles the refresh token operation, validating the refresh token,
+ * retrieving the associated user, and generating a new JWT.
+ */
 @useRateLimiter('REFRESH_TOKEN_PER_HOUR_BY_IP', {
   points: 5, // 5 calls
   duration: 60 * 60, // per 1 hour
   blockDuration: 60 * 60, // block on 1 hour
 })
 @injectable()
-class RefreshJWTToken extends Operation {
+export class RefreshToken extends Operation {
   static validationRules = z.object({
     refreshToken: z.string().min(1), // Validates as a required string
     clientId: z.string().optional(), // Validates as an optional string
@@ -36,9 +43,8 @@ class RefreshJWTToken extends Operation {
         clientId
       );
 
-      // TODO check expires date for refresh token
       if (user) {
-        logger.info(`RefreshJWTToken found user`);
+        logger.info(`RefreshToken found user`);
 
         this._memoryStorage.setValue(user.id, user);
 
@@ -49,10 +55,10 @@ class RefreshJWTToken extends Operation {
           jwt,
         };
       } else {
-        logger.warn(`RefreshJWTToken user not found for token ${refreshToken}`);
+        logger.warn(`RefreshToken user not found for token ${refreshToken}`);
       }
     } catch (error) {
-      logger.error('RefreshJWTToken:error', error);
+      logger.error('RefreshToken:error', error);
 
       if (typeof error === 'string') {
         throw new Error(error);
@@ -67,4 +73,3 @@ class RefreshJWTToken extends Operation {
   }
 }
 
-export default RefreshJWTToken;

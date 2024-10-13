@@ -14,8 +14,21 @@ import {
 } from './types';
 import { defaultResponseHandler, getStatusForError } from './utils';
 
-// according to clean architecture paramsCb serves as interactor - just pass params to service(use case)
-const createController =
+/**
+ * Creates an express.js controller function for handling API requests.
+ * This function adheres to Clean Architecture principles, where `paramsCb` serves as an interactor
+ * to pass parameters to the service (use case).
+ *
+ * @param {interfaces.Newable<Operation>} serviceConstructor - The constructor of the service (operation) to be executed.
+ * @param {Function} [paramsCb=() => {}] - A callback function to extract and transform parameters from the request. According to clean architecture paramsCb serves as interactor - it passes params to service(use case)
+ * @param {Function} [resCb=defaultResponseHandler] - A callback function to handle the response.
+ * @param {Knex.Transaction} [parentTransaction] - An optional parent transaction to be used for database operations.
+ *
+ * @returns {Function} An Express.js middleware function that processes the request, executes the service, and handles the response.
+ *
+ * @throws {Error} Throws an error if JWT is already expired, rate limits are exceeded, or any unexpected error occurs during the operation.
+ */
+export const createController =
   (
     serviceConstructor: interfaces.Newable<Operation>,
     paramsCb: Function = () => {},
@@ -204,4 +217,3 @@ const processRateLimiters = async (ipAddr, rateLimiters: any[]) => {
   };
 };
 
-export default createController;

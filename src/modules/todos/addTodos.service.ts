@@ -7,17 +7,40 @@ import { BINDINGS } from '../../common/constants';
 import { Todo } from './types';
 import useTransaction from '../../common/useTransaction';
 
+
+/**
+ * @class AddTodos
+ *
+ * Service class to handle adding todos for a user.
+ */
 @useTransaction()
 @injectable()
-class AddTodos extends Operation {
+export class AddTodos extends Operation {
+
+  /**
+   * Validation rules for input data using Zod schema.
+   * @type {ZodSchema}
+   */
   static validationRules = z.object({
     userId: z.string().uuid().min(1), // UUID and required
     todos: z.array(z.string().min(2).max(200)).min(1), // array with at least one string, each string has a min length of 2 and max of 200
   });
 
+  /**
+   * The todos repository instance.
+   * @private
+   * @type {TodosRepository}
+   */
   @inject(BINDINGS.TodosRepository)
   private _todosRepository: any;
 
+  /**
+   * Executes the operation to add todos.
+   * @param {Object} validatedUserData - The validated user data.
+   * @param {string} validatedUserData.userId - The ID of the user.
+   * @param {string[]} validatedUserData.todos - An array of todo descriptions.
+   * @returns {Promise<Todo[]>} - A promise that resolves to an array of added todos.
+   */
   async execute(this: AddTodos, validatedUserData: any): Promise<Todo[]> {
     const { userId, todos } = validatedUserData;
 
@@ -33,5 +56,3 @@ class AddTodos extends Operation {
     }
   }
 }
-
-export default AddTodos;

@@ -5,8 +5,13 @@ import logger from '../../infra/loaders/logger';
 
 import { BINDINGS } from '../../common/constants';
 
+/**
+ * @class GetUsers
+ * 
+ * Handles the operation of retrieving all available users.
+ */
 @injectable()
-class GetUsers extends Operation {
+export class GetUsers extends Operation {
   @inject(BINDINGS.UsersRepository)
   private _usersRepository: any;
 
@@ -29,4 +34,3 @@ class GetUsers extends Operation {
   }
 }
 
-export default GetUsers;

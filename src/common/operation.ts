@@ -2,6 +2,12 @@ import { injectable, inject } from './types';
 import BaseRepository from './baseRepository';
 import { BINDINGS } from './constants';
 
+/**
+ * @class BaseOperation
+ *
+ * Serves as the base class for all service operations, providing common functionalities
+ * such as validation, repository management, and execution flow control.
+ */
 @injectable()
 class BaseOperation {
   @inject(BINDINGS.MemoryStorage)

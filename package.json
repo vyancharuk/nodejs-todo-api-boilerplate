@@ -17,7 +17,9 @@
     "docker:build": "docker-compose -f docker-compose.dev.yml down && docker-compose -f docker-compose.dev.yml --project-name=app up -d --no-deps --build",
     "test": "NODE_ENV=test node --trace-deprecation node_modules/jest/bin/jest --forceExit --detectOpenHandles  --verbose --runInBand",
     "docker:test": "docker-compose -f docker-compose.test.yml --project-name=app-tests up",
-    "docker:test:build": "docker-compose -f docker-compose.test.yml down && docker-compose -f docker-compose.test.yml --project-name=app-tests up -d --no-deps --build"
+    "docker:test:build": "docker-compose -f docker-compose.test.yml down && docker-compose -f docker-compose.test.yml --project-name=app-tests up -d --no-deps --build",
+    "generate:docs": "typedoc",
+    "serve:docs": "npx http-server docs"
   },
   "keywords": [
     "nodejs",
@@ -44,6 +46,7 @@
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^9.0.8",
     "@types/winston": "^2.4.4",
+    "http-server": "^14.1.1",
     "install": "^0.13.0",
     "jest": "^29.7.0",
     "npm": "^10.8.1",
@@ -52,6 +55,7 @@
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "typedoc": "^0.26.9",
     "typescript": "^5.4.5"
   },
   "dependencies": {

@@ -1,19 +1,29 @@
 import { Request, Response, HTTP_STATUS } from '../../common/types';
-import createController from '../../common/createController';
+import { createController } from '../../common/createController';
 
-import GetUser from './getUser.service';
-import GetUsers from './getUsers.service';
-import LoginUser from './loginUser.service';
-import LogoutUser from './logoutUser.service';
-import RegisterUser from './registerAnonymousUser.service';
-import RefreshToken from './refreshToken.service';
+import { GetUser } from './getUser.service';
+import { GetUsers } from './getUsers.service';
+import { LoginUser } from './loginUser.service';
+import { LogoutUser } from './logoutUser.service';
+import { RegisterAnonymousUser } from './registerAnonymousUser.service';
+import { RefreshToken } from './refreshToken.service';
 
 import { isErrorCode } from '../../common/utils';
 
-export default {
-  // use composite controller to include get 
+/**
+ * Controller module for handling user-related operations.
+ * @module controllers/users
+ */
+export const usersController = {
+  /**
+   * Controller to register an anonymous user.
+   * @property {Function} registerAnonymous
+   * @param {Request} req - The Express request object containing user data.
+   * @param {Response} res - The Express response object.
+   * @returns {Function} - The controller function that handles anonymous user registration.
+   */
   registerAnonymous: createController(
-    RegisterUser,
+    RegisterAnonymousUser,
     async (req: Request, res: Response) => req.body,
     (res: Response, { result, code, headers = [] }: any, req: Request) => {
       headers.forEach(({ name, value }) => {
@@ -36,6 +46,13 @@ export default {
       });
     }
   ),
+
+  /**
+   * Controller to log in a user.
+   * @property {Function} loginUser
+   * @param {Request} req - The Express request object containing user credentials.
+   * @returns {Function} - The controller function that handles user login.
+   */
   loginUser: createController(
     LoginUser,
     (req: Request) => req.body,
@@ -58,6 +75,13 @@ export default {
       res.json({ result }).status(HTTP_STATUS.OK);
     }
   ),
+
+  /**
+   * Controller to log out a user.
+   * @property {Function} logoutUser
+   * @param {Request} req - The Express request object containing authorization headers.
+   * @returns {Function} - The controller function that handles user logout.
+   */
   logoutUser: createController(
     LogoutUser,
     (req: Request) => ({
@@ -68,10 +92,29 @@ export default {
       res.json({ result }).status(code);
     }
   ),
-  // TODO: refresh token
+   /**
+   * Controller to refresh the user's authentication token.
+   * @property {Function} refreshToken
+   * @param {Request} req - The Express request object containing the refresh token.
+   * @returns {Function} - The controller function that handles token refresh.
+   */
   refreshToken: createController(RefreshToken, (req: Request) => req.body),
+
+  /**
+   * Controller to get information about the current authenticated user.
+   * @property {Function} getUser
+   * @param {Request} req - The Express request object containing the current user.
+   * @returns {Function} - The controller function that retrieves user information.
+   */
   getUser: createController(GetUser, (req: Request) => ({
     userId: req['currentUser'].id,
   })),
+
+
+  /**
+   * Controller to get a list of users.
+   * @property {Function} getUsers
+   * @returns {Function} - The controller function that retrieves a list of users.
+   */
   getUsers: createController(GetUsers),
 };

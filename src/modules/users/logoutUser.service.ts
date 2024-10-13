@@ -6,13 +6,18 @@ import useRateLimiter from '../../common/useRateLimiter';
 import { BINDINGS } from '../../common/constants';
 import logger from '../../infra/loaders/logger';
 
+/**
+ * @class LogoutUser
+ * 
+ * Handles the logout operation for a user by invalidating their JWT and removing associated refresh tokens.
+ */
 @useRateLimiter('LOGOUT_USER_PER_HOUR_BY_IP', {
   points: 5, // 5 calls
   duration: 60 * 60, // per 1 hour
   blockDuration: 60 * 60, // block on 1 hour
 })
 @injectable()
-class LogoutUser extends Operation {
+export class LogoutUser extends Operation {
   static validationRules = z.object({
     userId: z.string().uuid().min(1), // Validates as a required UUID string
     jwt: z.string(), // Validates as a required string
@@ -48,4 +53,3 @@ class LogoutUser extends Operation {
   }
 }
 
-export default LogoutUser;

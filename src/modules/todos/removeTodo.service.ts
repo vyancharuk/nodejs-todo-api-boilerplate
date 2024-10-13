@@ -5,9 +5,14 @@ import useTransaction from '../../common/useTransaction';
 import logger from '../../infra/loaders/logger';
 import { Todo } from './types';
 
+/**
+ * @class RemoveTodo
+ *
+ * Implements user todo removal
+ */
 @useTransaction()
 @injectable()
-class RemoveTodo extends Operation {
+export class RemoveTodo extends Operation {
   static validationRules = z.object({
     userId: z.string().uuid().min(1), // Validates as a required UUID string
     todoId: z.string().uuid().min(1), // Validates as a required UUID string
@@ -31,5 +36,3 @@ class RemoveTodo extends Operation {
     }
   }
 }
-
-export default RemoveTodo;

@@ -6,6 +6,7 @@
 gcconfig.json
 src/examples
 samples
+docs
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

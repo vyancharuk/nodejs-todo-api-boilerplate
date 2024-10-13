@@ -1,35 +1,86 @@
-import { Router } from 'express';
+import { todoController } from './controllers';
+import { UserRoles } from '../../common/types';
+import { isAuth, attachCurrentUser, checkRole } from '../../infra/middlewares';
 
-import todosController from './controllers';
-import { MiddlewareFn, UserRoles } from '../../common/types';
+/**
+ * Represents a configuration for an Express.js route.
+ *
+ * @typedef {Object} RouteConfig
+ * @property {string} method - The HTTP method (GET, POST, PUT, DELETE, etc.).
+ * @property {string} path - The route path.
+ * @property {function(Request, Response, NextFunction): void | Promise<void>} handler - The route handler function.
+ * @property {Array<function(Request, Response, NextFunction): void | Promise<void>>} [middlewares] - An array of middleware functions for the route.
+ */
 
-const route = Router();
+/**
+ * Represents a collection of Express.js routes.
+ *
+ * @typedef {Record<string, RouteConfig>} TodoRoutes
+ */
 
-export default (
-  app: Router,
-  {
-    isAuth,
-    attachCurrentUser,
-    checkRole,
-  }: {
-    isAuth: MiddlewareFn;
-    attachCurrentUser: MiddlewareFn;
-    checkRole: (roleBits: number, errorMsg?: string) => MiddlewareFn;
-  }
-) => {
-  app.use('/todos', route);
+/**
+ * Sets up the TODO routes.
+ *
+ * @type {TodoRoutes}
+ */
+export const todoRoutes = {
+  /**
+   * Retrieves todos for the current authenticated user.
+   *
+   * @type {RouteConfig}
+   */
+  getUserTodos: {
+    method: 'GET',
+    path: '/todos/my',
+    handler: todoController.getUserTodos,
+    middlewares: [isAuth, attachCurrentUser],
+  },
 
-  route.get('/my', isAuth, attachCurrentUser, todosController.getUserTodos);
+  /**
+   * Retrieves all todos (Admin only).
+   * 
+   * @type {RouteConfig}
+   */
+  getAllTodos: {
+    method: 'GET',
+    path: '/todos/',
+    handler: todoController.getAllTodos,
+    middlewares: [isAuth, attachCurrentUser, checkRole(UserRoles.Admin)],
+  },
 
-  route.get(
-    '/',
-    isAuth,
-    attachCurrentUser,
-    checkRole(UserRoles.Admin),
-    todosController.getAllTodos
-  );
+  /**
+   * Adds new todos for the current authenticated user.
+   * 
+   * @type {RouteConfig}
+   */
+  addTodos: {
+    method: 'POST',
+    path: '/todos/add',
+    handler: todoController.addTodos,
+    middlewares: [isAuth, attachCurrentUser],
+  },
 
-  route.post('/add', isAuth, attachCurrentUser, todosController.addTodos);
-  route.put('/:id', isAuth, attachCurrentUser, todosController.updateTodo);
-  route.delete('/:id', isAuth, attachCurrentUser, todosController.removeTodo);
+  /**
+   * Updates a todo item for the current authenticated user.
+   * 
+   * @type {RouteConfig}
+   */
+  updateTodo: {
+    method: 'PUT',
+    path: '/todos/:id',
+    handler: todoController.updateTodo,
+    middlewares: [isAuth, attachCurrentUser],
+  },
+
+  /**
+   * Removes a todo item for the current authenticated user.
+   * 
+   * @type {RouteConfig}
+   */
+  removeTodo: {
+    method: 'DELETE',
+    path: '/todos/:id',
+    handler: todoController.removeTodo,
+    middlewares: [isAuth, attachCurrentUser],
+  },
 };

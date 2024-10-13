@@ -1,5 +1,5 @@
 import type { Knex } from 'knex';
-import { Application, Request, Response, NextFunction } from 'express';
+import { Application, NextFunction, Request, Response, Router } from 'express';
 import { Container, injectable, inject, interfaces } from 'inversify';
 import toCamelCase from 'camelcase-keys';
 import { z } from 'zod';
@@ -41,6 +41,16 @@ class CustomError extends Error {
   }
 }
 
+/**
+ * Represents a configuration for an Express.js route.
+ */
+type RouteConfig = {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | string;
+  path: string;
+  handler: (req: Request, res: Response, next: NextFunction) => void | Promise<void>;
+  middlewares?: MiddlewareFn[];
+};
+
 export {
   injectable,
   inject,
@@ -48,6 +58,7 @@ export {
   Request,
   Response,
   NextFunction,
+  Router,
   z,
   Knex,
   Container,
@@ -62,4 +73,5 @@ export {
   UserRoles,
   OperationResult,
   HTTP_STATUS,
+  RouteConfig,
 };

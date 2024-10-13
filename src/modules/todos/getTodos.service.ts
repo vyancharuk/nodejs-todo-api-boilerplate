@@ -6,8 +6,14 @@ import logger from '../../infra/loaders/logger';
 import { BINDINGS } from '../../common/constants';
 import { Todo } from './types';
 
+
+/**
+ * @class GetAllTodos
+ *
+ * Service class to load all available todos
+ */
 @injectable()
-class GetTodos extends Operation {
+export class GetAllTodos extends Operation {
   static validationRules = z.object({
     search: z
       .string()
@@ -22,17 +28,17 @@ class GetTodos extends Operation {
   });
 
   @inject(BINDINGS.TodosRepository)
-  private _todosRepository: any;
+  private _todosRepository;
 
-  async execute(this: GetTodos, validatedUserData: any): Promise<Todo[]> {
+  async execute(this: GetAllTodos, validatedUserData: any): Promise<Todo[]> {
     const { pageSize = 100, pageInd = 0, search = '' } = validatedUserData;
 
     try {
-      logger.info(`GetTodos:execute`);
+      logger.info(`GetAllTodos:execute`);
 
       return this._todosRepository.findAll(pageInd, pageSize, search);
     } catch (error) {
-      logger.error('GetTodos:error', error);
+      logger.error('GetAllTodos:error', error);
       if (typeof error === 'string') {
         throw new Error(error);
       } else if (error instanceof Error) {
@@ -43,5 +49,3 @@ class GetTodos extends Operation {
     }
   }
 }
-
-export default GetTodos;

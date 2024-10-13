@@ -1,15 +1,14 @@
 import { Router } from 'express';
-import { isAuth, attachCurrentUser, checkRole } from '../infra/middlewares';
 
-import userRoutes from './users/routes';
-import todos from './todos/routes';
+import { userRoutes } from './users/routes';
+import { todoRoutes } from './todos/routes';
+import { createRoutes } from '../common/createRoutes';
 
-// guaranteed to get dependencies
 export default () => {
   const app = Router();
 
-  userRoutes(app, { isAuth, attachCurrentUser, checkRole });
-  todos(app, { isAuth, attachCurrentUser, checkRole });
+  createRoutes(app, userRoutes);
+  createRoutes(app, todoRoutes);
 
   return app;
 };

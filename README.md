@@ -19,6 +19,7 @@ The application provides APIs for users to view, create, update, and delete todo
 - Multi-layer trace ID support for logging with **winston**
 - Support graceful shutdown for the **express.js** server
 - Auto-reload on save using **ts-node-dev**
+- Automated documentation generation with **TypeDoc**
 
 
 ## Development
@@ -67,6 +68,12 @@ todo-api
 
 
 ## API Docs
+Comprehensive API documentation is created directly from the source code using **TypeDoc**. To generate the documentation, run:
+
+1. Generate documentation: `npm run generate:docs`
+2. Serve documentation locally: `npm run serve:docs`
+
+After running these commands, the documentation will be accessible at [http://127.0.0.1:8081](http://127.0.0.1:8081).
 
 Here is Postman collection to work with API locally:
 

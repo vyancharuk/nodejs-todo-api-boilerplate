@@ -7,13 +7,19 @@ import { BINDINGS } from '../../common/constants';
 import logger from '../../infra/loaders/logger';
 import appConfig from '../../config/app';
 
+/**
+ * @class LoginUser
+ * 
+ * Handles the login operation for a user by validating credentials,
+ * generating JWT and refresh tokens, and managing user sessions.
+ */
 @useRateLimiter('LOGIN_USER_PER_HOUR_BY_IP', {
   points: 5, // 5 calls
   duration: 60 * 60, // per 1 hour
   blockDuration: 60 * 60, // block on 1 hour
 })
 @injectable()
-class LoginUser extends Operation {
+export class LoginUser extends Operation {
   static validationRules = z.object({
     password: z.string().max(100).min(1), // Required string with a maximum length of 100
     username: z.string().max(100).optional(), // Optional string with a maximum length of 100
@@ -76,4 +82,3 @@ class LoginUser extends Operation {
   }
 }
 
-export default LoginUser;

@@ -1,6 +1,12 @@
 import { Knex, injectable, inject } from './types';
 import { BINDINGS } from './constants';
 
+/**
+ * @class BaseRepository
+ * 
+ * Serves as the base repository class providing common database operations
+ * such as setting database access and wrapping query builders with pagination and search functionalities.
+ */
 @injectable()
 class BaseRepository {
   @inject(BINDINGS.DbAccess)

@@ -10,6 +10,14 @@ import appConfig from '../../config/app';
 import logger from '../../infra/loaders/logger';
 import _ from 'lodash';
 
+
+/**
+ * @class RegisterAnonymousUser
+ * 
+ * @description
+ * Handles the registration of anonymous users by creating a new user account with a generated username and password.
+ * Generates JWT and refresh tokens, stores the user session in memory, and manages token expiration.
+ */
 @useTransaction()
 @useRateLimiter('CREATE_USER_PER_HOUR_BY_IP', {
   points: 5, // 5 calls
@@ -17,7 +25,7 @@ import _ from 'lodash';
   blockDuration: 60 * 60, // block on 1 hour
 })
 @injectable()
-class RegisterAnonymousUser extends Operation {
+export class RegisterAnonymousUser extends Operation {
   static validationRules = z.object({
     clientId: z.string().max(200).optional(), // Validates as an optional string
   });
@@ -73,4 +81,3 @@ class RegisterAnonymousUser extends Operation {
   }
 }
 
-export default RegisterAnonymousUser;

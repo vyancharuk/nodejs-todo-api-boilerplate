@@ -6,8 +6,13 @@ import Operation from '../../common/operation';
 import logger from '../../infra/loaders/logger';
 import { BINDINGS } from '../../common/constants';
 
+/**
+ * @class GetUser
+ *
+ * Handles the operation of retrieving a single user details by ID or email.
+ */
 @injectable()
-class GetUser extends Operation {
+export class GetUser extends Operation {
   static validationRules = z.object({
     userId: z.string().uuid(), // validate UUID
     email: z.string().min(3).optional(), // string with minimum length of 3
@@ -43,4 +48,3 @@ class GetUser extends Operation {
   }
 }
 
-export default GetUser;
