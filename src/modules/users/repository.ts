@@ -2,8 +2,13 @@ import { injectable } from '../../common/types';
 import { UserInputData, User } from './types';
 import BaseRepository from '../../common/baseRepository';
 
+/**
+ * @class UsersRepository
+ *
+ * Repository for managing user-related database operations, including retrieval, creation, updating, and deletion of users and their refresh tokens.
+ */
 @injectable()
-class UsersRepository extends BaseRepository {
+export class UsersRepository extends BaseRepository {
   async findAll() {
     return this.dbAccess!('users').returning('*');
   }
@@ -43,7 +48,6 @@ class UsersRepository extends BaseRepository {
     refreshToken: string,
     clientId: number
   ): Promise<User | undefined> {
-    // TODO: add return type cast
     return this.dbAccess('users')
       .select('users.*')
       .innerJoin(
@@ -105,5 +109,3 @@ class UsersRepository extends BaseRepository {
     return this.dbAccess!('user_refresh_tokens').where('user_id', userId).del();
   }
 }
-
-export default UsersRepository;

@@ -5,7 +5,6 @@ import useTransaction from '../../common/useTransaction';
 import useRateLimiter from '../../common/useRateLimiter';
 import { hashPassword, generateJWT, generateRefreshToken } from './authUtils';
 import { BINDINGS } from '../../common/constants';
-import UsersRepository from './repository';
 import appConfig from '../../config/app';
 import logger from '../../infra/loaders/logger';
 import _ from 'lodash';
@@ -14,7 +13,6 @@ import _ from 'lodash';
 /**
  * @class RegisterAnonymousUser
  * 
- * @description
  * Handles the registration of anonymous users by creating a new user account with a generated username and password.
  * Generates JWT and refresh tokens, stores the user session in memory, and manages token expiration.
  */
@@ -31,7 +29,7 @@ export class RegisterAnonymousUser extends Operation {
   });
 
   @inject(BINDINGS.UsersRepository)
-  private _usersRepository!: UsersRepository;
+  private _usersRepository: any;
 
   async execute(validatedUserData: any) {
     const { clientId = appConfig.defaultClientId } = validatedUserData;

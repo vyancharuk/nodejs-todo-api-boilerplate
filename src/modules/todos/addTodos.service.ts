@@ -34,13 +34,6 @@ export class AddTodos extends Operation {
   @inject(BINDINGS.TodosRepository)
   private _todosRepository: any;
 
-  /**
-   * Executes the operation to add todos.
-   * @param {Object} validatedUserData - The validated user data.
-   * @param {string} validatedUserData.userId - The ID of the user.
-   * @param {string[]} validatedUserData.todos - An array of todo descriptions.
-   * @returns {Promise<Todo[]>} - A promise that resolves to an array of added todos.
-   */
   async execute(this: AddTodos, validatedUserData: any): Promise<Todo[]> {
     const { userId, todos } = validatedUserData;
 

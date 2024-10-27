@@ -20,7 +20,7 @@ export class GetUserTodos extends Operation {
       .max(50)
       .optional()
       .or(z.literal('').or(z.null()))
-      .refine((val) => /^[a-zA-Z0-9]*$/.test(val || ""), {
+      .refine((val) => /^[a-zA-Z0-9]*$/.test(val || ''), {
         message: 'Must be alphanumeric',
       }), // Allows empty string, null, and alphanumeric
     pageSize: z.number().int().min(1).max(100).optional(), // Integer between 1 and 100
@@ -61,4 +61,3 @@ export class GetUserTodos extends Operation {
     }
   }
 }
-

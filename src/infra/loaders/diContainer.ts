@@ -11,6 +11,13 @@ import { Knex, Container } from '../../common/types';
 import BaseRepository from '../../common/baseRepository';
 import logger from './logger';
 
+/**
+ * @module DIContainer
+ *
+ * Configures and initializes the Inversify dependency injection container, binding services,
+ * repositories, and applying middleware for logging dependency resolutions.
+ */
+
 function diLogger(planAndResolve: interfaces.Next): interfaces.Next {
   return (args: interfaces.NextArgs) => {
     return planAndResolve(args);

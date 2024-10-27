@@ -1,7 +1,7 @@
 import { createController } from '../../common/createController';
 import { Request } from '../../common/types';
 
-import { GetAllTodos } from './getTodos.service';
+import { GetAllTodos } from './getAllTodos.service';
 import { GetUserTodos } from './getUserTodos.service';
 import { AddTodos } from './addTodos.service';
 import { UpdateTodo } from './updateTodo.service';

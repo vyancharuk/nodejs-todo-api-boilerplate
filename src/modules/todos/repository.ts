@@ -3,8 +3,13 @@ import { injectable } from '../../common/types';
 import logger from '../../infra/loaders/logger';
 import { Todo } from './types';
 
+/**
+ * @class TodosRepository
+ *
+ * Manages todo-related database operations, including retrieving, creating, updating, and deleting Todo items.
+ */
 @injectable()
-class TodosRepository extends BaseRepository {
+export class TodosRepository extends BaseRepository {
   async findAll(
     pageInd: number,
     pageSize: number,
@@ -54,5 +59,3 @@ class TodosRepository extends BaseRepository {
       .del();
   }
 }
-
-export default TodosRepository;

@@ -6,9 +6,9 @@ import logger from '../../infra/loaders/logger';
 import { Todo } from './types';
 
 /**
- * @class RemoveTodo
+ * @class UpdateTodo
  *
- * Supports updating todo properties
+ * Implements updating todo properties
  */
 @useTransaction()
 @injectable()
