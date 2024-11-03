@@ -63,7 +63,11 @@ export async function seed(knex: Knex): Promise<any> {
   await knex('todos').insert([
     { content: 'Do exercises', user_id: adminId },
     { content: 'Check email', user_id: adminId },
-    { content: 'Call to bank', user_id: adminId },
+    {
+      content: 'Call to bank',
+      user_id: adminId,
+      meta: { expires_at: (new Date(2024, 9, 1, 14, 30, 0)) },
+    },
     { content: 'Order pizza', user_id: adminId },
     { content: 'Pay bills', user_id: adminId },
   ]);

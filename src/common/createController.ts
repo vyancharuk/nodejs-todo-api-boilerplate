@@ -1,4 +1,5 @@
 import { RateLimiterRedis } from 'rate-limiter-flexible';
+import requestIp from 'request-ip';
 
 import { container } from '../infra/loaders/diContainer';
 import logger from '../infra/loaders/logger';
@@ -36,19 +37,16 @@ export const createController =
     parentTransaction?: Knex.Transaction | undefined
   ) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    // 1. check jwt token if it is already logged out
+    // 1. check jwt token if it is already expired
     logger.info(
       `createController:start auth=${!!req.headers['authorization']}`
     );
 
     let transaction: Knex.Transaction | undefined;
-    // TODO: remove remoteAddress
-    const ipAddr = req.connection.remoteAddress;
-
     try {
       if (req.headers['authorization']) {
         const memoryStorage: any = container.get(BINDINGS.MemoryStorage);
-        // check for already logout token
+        // check for already expired token
         const jwt = req.headers['authorization']!.split(' ')[1];
         const jwtSign = jwt.split('.')[2];
         const tokenExpired = await memoryStorage.getValue(jwtSign);
@@ -66,6 +64,8 @@ export const createController =
       }
 
       // 2. process rate limiters
+      const ipAddr = requestIp.getClientIp(req);
+
       const { retrySecs, currentRateLimiters } = await processRateLimiters(
         ipAddr,
         serviceConstructor['rateLimiters']
@@ -85,10 +85,10 @@ export const createController =
         `createController:before consume rate limiters count=${currentRateLimiters.length}`
       );
 
-      // 1.2 update rateLimiters
+      // update rateLimiters
       await Promise.all(currentRateLimiters.map((tr) => tr.consume(ipAddr)));
 
-      // 2. process use case logic
+      // 3. process use case service logic
       logger.info(`createController:init`);
 
       // create transaction if needed, and share it between all repositories used by controller
@@ -151,7 +151,7 @@ export const createController =
         );
       }
 
-      if (!(ex instanceof Error) && (ex as any).msBeforeNext) {
+      if (!(ex instanceof Error) && (ex as { msBeforeNext: number }).msBeforeNext) {
         return resCb(res, {
           result: { error: 'TOO_MANY_REQUESTS' },
           code: HTTP_STATUS.TOO_MANY_REQUESTS,
@@ -170,15 +170,13 @@ export const createController =
         result: { error: (ex as any).toString() },
         code: getStatusForError(ex),
       });
-
-      // return next(ex);
     }
   };
 
 const processRateLimiters = async (ipAddr, rateLimiters: any[]) => {
   const redis = container.get(BINDINGS.Redis);
 
-  // create RateLimiters if needed for current class
+  // create rate limiters if needed for current class
   const currentRateLimiters: any[] = rateLimiters.reduce((result, params) => {
     let rt;
     if (container.isBound(params.keyPrefix)) {
@@ -201,7 +199,7 @@ const processRateLimiters = async (ipAddr, rateLimiters: any[]) => {
   );
 
   rtResults.forEach((resByIP, ind) => {
-    // Check if IP is already blocked
+    // check if IP address is already blocked
     if (
       retrySecs === 0 &&
       resByIP !== null &&

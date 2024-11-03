@@ -9,20 +9,21 @@ import appConfig from '../config/app';
  * Admin - 4 - 100
  * @param role enum UserRoles
  */
-function getRoleCode(role: string): UserRoles {
+const getRoleCode = (role: string): UserRoles => {
   const enumValue = role[0].toUpperCase() + role.slice(1);
 
   return UserRoles[enumValue];
 }
 
-function getHashedValue(text) {
+const getHashedValue = (text: string) => {
   return crypto
     .createHash('md5')
     .update(text + appConfig.hashSalt)
     .digest('hex');
 }
 
-const isErrorCode = (code) => !code.toString().startsWith('2');
+// success codes are 2xx
+const isErrorCode = (code: number) => !code.toString().startsWith('2');
 const getStatusForError = (error) => {
   if (error.toString().toLowerCase().indexOf('validationerror') > -1) {
     return HTTP_STATUS.BAD_REQUEST;
@@ -42,10 +43,15 @@ const defaultResponseHandler = (
   return res.status(code).json({ result });
 };
 
+const stringifyError = (error) => {
+  return `name=${error.name}:message=${error.message}`;
+}
+
 export {
   getRoleCode,
   getHashedValue,
   isErrorCode,
   getStatusForError,
   defaultResponseHandler,
+  stringifyError,
 };

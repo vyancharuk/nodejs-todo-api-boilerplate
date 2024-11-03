@@ -58,4 +58,15 @@ export class TodosRepository extends BaseRepository {
       .andWhere('user_id', userId)
       .del();
   }
+
+  async setExpiredTodos() {
+    return this.dbAccess('todos')
+      .whereRaw(`(meta->>'expires_at')::timestamp < now()`)
+      .update({
+        meta: this.dbAccess.raw(
+          `jsonb_set(meta, '{expired}', 'true'::jsonb, true)`
+        ),
+      })
+      .returning('*');
+  }
 }
