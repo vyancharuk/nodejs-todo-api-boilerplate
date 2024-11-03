@@ -20,6 +20,7 @@ The application provides APIs for users to view, create, update, and delete todo
 - Support graceful shutdown for the **express.js** server
 - Auto-reload on save using **ts-node-dev**
 - Automated documentation generation with **TypeDoc**
+- Scheduled server-side cron jobs using **node-cron**
 
 
 ## Development
