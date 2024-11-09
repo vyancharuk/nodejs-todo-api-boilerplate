@@ -55,7 +55,7 @@ export const todoRoutes = {
    */
   addTodos: {
     method: 'POST',
-    path: '/todos/add',
+    path: '/todos',
     handler: todoController.addTodos,
     middlewares: [isAuth, attachCurrentUser],
   },

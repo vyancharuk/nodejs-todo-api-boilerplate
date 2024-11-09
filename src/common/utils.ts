@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import _ from 'lodash';
 import { UserRoles, HTTP_STATUS, Response } from './types';
 import appConfig from '../config/app';
 
@@ -47,6 +48,24 @@ const stringifyError = (error) => {
   return `name=${error.name}:message=${error.message}`;
 }
 
+/**
+ * Recursively converts object keys from camelCase to snake_case.
+ *
+ * @param {Object|Array} data - The input data to convert.
+ * @returns {Object|Array} - The converted data with snake_case keys.
+ */
+const camelToSnake = (data) => {
+  if (_.isArray(data)) {
+    return data.map(item => camelToSnake(item));
+  } else if (_.isObject(data) && !_.isDate(data) && !_.isRegExp(data)) {
+    return _.transform(data, (result, value, key) => {
+      const snakeKey = _.snakeCase(key);
+      result[snakeKey] = camelToSnake(value);
+    }, {});
+  }
+  return data;
+}
+
 export {
   getRoleCode,
   getHashedValue,
@@ -54,4 +73,5 @@ export {
   getStatusForError,
   defaultResponseHandler,
   stringifyError,
+  camelToSnake,
 };

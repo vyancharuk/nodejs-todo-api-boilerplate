@@ -3,7 +3,7 @@ import { Request } from '../../common/types';
 
 import { GetAllTodos } from './getAllTodos.service';
 import { GetUserTodos } from './getUserTodos.service';
-import { AddTodos } from './addTodos.service';
+import { AddTodo } from './addTodo.service';
 import { UpdateTodo } from './updateTodo.service';
 import { RemoveTodo } from './removeTodo.service';
 
@@ -45,9 +45,11 @@ export const todoController = {
    * @param {Request} req - The HTTP request object.
    * @returns {Promise<Todo[]>} A promise that resolves to the added todos.
    */
-  addTodos: createController(AddTodos, (req: Request) => ({
+  addTodos: createController(AddTodo, (req: Request) => ({
     userId: req['currentUser'].id,
-    todos: req.body.todos,
+    content: req.body.content,
+    fileSrc: req.body.fileSrc,
+    meta: req.body.meta,
   })),
 
   /**
@@ -60,6 +62,8 @@ export const todoController = {
     userId: req['currentUser'].id,
     todoId: req.params.id,
     content: req.body.content,
+    fileSrc: req.body.fileSrc,
+    meta: req.body.meta,
   })),
 
   /**

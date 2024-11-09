@@ -18,9 +18,11 @@ The application provides APIs for users to view, create, update, and delete todo
 - Simple DB transaction management with **Knex**
 - Multi-layer trace ID support for logging with **winston**
 - Support graceful shutdown for the **express.js** server
+- In-memory data storage and caching with **ioredis**
 - Auto-reload on save using **ts-node-dev**
 - Automated documentation generation with **TypeDoc**
 - Scheduled server-side cron jobs using **node-cron**
+- AWS S3 integration for file uploads using **aws-sdk**
 
 
 ## Development
@@ -95,7 +97,7 @@ List of available routes:
 `GET /v1/users/me` - get current user
 
 **Todo routes**:\
-`POST /api/todos/add` - create a todo\
+`POST /api/todos` - create new todo\
 `PUT /api/todos/:todoId` - update todo\
 `GET /api/todos/my` - get all users' todos\
 `DELETE /api/todos/:todoId` - delete user\

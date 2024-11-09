@@ -43,10 +43,12 @@ export class TodosRepository extends BaseRepository {
       .returning('id');
   }
 
-  async updateTodo(todoId: string, userId: string, content: string) {
+  async updateTodo(todoId: string, userId: string, newProps: { content: string; file_src: string; meta: any}) {
     return this.dbAccess('todos')
       .update({
-        content,
+        content: newProps.content,
+        file_src: newProps.file_src,
+        meta: newProps.meta,
       })
       .where('id', todoId)
       .andWhere('user_id', userId);
