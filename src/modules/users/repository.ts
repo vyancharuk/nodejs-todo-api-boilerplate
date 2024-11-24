@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import { injectable } from '../../common/types';
 import { UserInputData, User } from './types';
 import BaseRepository from '../../common/baseRepository';
@@ -68,6 +69,7 @@ export class UsersRepository extends BaseRepository {
     const [newUser] = await this.dbAccess('users')
       .insert([
         {
+          id: uuid(),
           user_name: userData.userName,
           email: userData.email,
           password: userData.password,
@@ -78,6 +80,7 @@ export class UsersRepository extends BaseRepository {
 
     await this.dbAccess!('user_refresh_tokens').insert([
       {
+        id: uuid(),
         user_id: newUser.id,
         client_id: clientId,
         refresh_token: userData.refreshToken,
@@ -97,6 +100,7 @@ export class UsersRepository extends BaseRepository {
     await this.delRefreshTokenForUser(userId);
     await this.dbAccess!('user_refresh_tokens').insert([
       {
+        id: uuid(),
         user_id: userId,
         client_id: clientId,
         refresh_token: refreshToken,

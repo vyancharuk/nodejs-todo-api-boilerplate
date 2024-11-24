@@ -29,7 +29,7 @@ export async function seed(knex: Knex): Promise<any> {
     .fill(null)
     .map(() => uuid());
 
-  // Inserts seed entries
+  // inserts seed entries
   await knex('users').insert([
     {
       id: adminId,
@@ -47,12 +47,14 @@ export async function seed(knex: Knex): Promise<any> {
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   await knex('user_refresh_tokens').insert([
     {
+      id: uuid(),
       user_id: adminId,
       client_id: appConfig.defaultClientId,
       expires,
       refresh_token: refreshToken,
     },
     ...[u1, u2, u3].map((uId) => ({
+      id: uuid(),
       user_id: uId,
       client_id: appConfig.defaultClientId,
       expires,
@@ -61,14 +63,17 @@ export async function seed(knex: Knex): Promise<any> {
   ]);
 
   await knex('todos').insert([
-    { content: 'Do exercises', user_id: adminId },
-    { content: 'Check email', user_id: adminId },
+    { id: uuid(), content: 'Do exercises', user_id: adminId },
+    { id: uuid(), content: 'Check email', user_id: adminId },
     {
+      id: uuid(),
       content: 'Call to bank',
       user_id: adminId,
-      meta: { expires_at: (new Date(2024, 9, 1, 14, 30, 0)) },
+      expires_at: (new Date(2025, 1, 1, 12, 30, 0)),
+      expired: false,
     },
-    { content: 'Order pizza', user_id: adminId },
-    { content: 'Pay bills', user_id: adminId },
+    { id: uuid(), content: 'Order pizza', user_id: adminId },
+    { id: uuid(), content: 'Pay bills', user_id: adminId },
   ]);
+
 }
