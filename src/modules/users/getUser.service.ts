@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { inject, injectable, z, toCamelCase } from '../../common/types';
+import { inject, injectable, toCamelCase, z } from '../../common/types';
 
 import Operation from '../../common/operation';
 import logger from '../../infra/loaders/logger';

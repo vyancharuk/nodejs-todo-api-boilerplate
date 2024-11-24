@@ -6,7 +6,7 @@ import logger from '../../infra/loaders/logger';
 import { BINDINGS } from '../../common/constants';
 import { Todo } from './types';
 import useTransaction from '../../common/useTransaction';
-import { camelToSnake } from '../../common/utils';
+import { camelToSnake, snakeToCamel } from '../../common/utils';
 
 
 /**
@@ -26,7 +26,7 @@ export class AddTodo extends Operation {
     userId: z.string().uuid().min(1), // user UUID
     content: z.string().min(2).max(200), // each string has a min length of 2 and max of 200
     fileSrc: z.string().min(2).optional(),
-    meta: z.object({}).passthrough().optional(), // any metadata assigned
+    expiresAt: z.string().min(2).optional(),
   });
 
   /**
@@ -38,16 +38,18 @@ export class AddTodo extends Operation {
   private _todosRepository: any;
 
   async execute(this: AddTodo, validatedUserData: any): Promise<Todo[]> {
-    const { userId, content, fileSrc, meta } = validatedUserData;
+    const { userId, content, fileSrc, expiresAt } = validatedUserData;
 
     try {
-      logger.info(`AddTodos:execute:userId=${userId}:content=${content}`);
+      logger.info(`AddTodos:execute:userId=${userId}:content=${content}:expiresAt=${expiresAt}`);
 
-      return this._todosRepository.addTodos(userId, [camelToSnake({
+      const addedTodos = await this._todosRepository.addTodo(userId, camelToSnake({
         content, 
         fileSrc,
-        meta
-      })]);
+        expiresAt
+      }));
+
+      return snakeToCamel(addedTodos[0]);
     } catch (error) {
       logger.error(
         `AddTodos:error:${(error as Error).name}:${(error as Error).message}`

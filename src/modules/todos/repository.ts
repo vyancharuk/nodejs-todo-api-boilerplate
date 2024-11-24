@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 import BaseRepository from '../../common/baseRepository';
 import { injectable } from '../../common/types';
 import logger from '../../infra/loaders/logger';
@@ -37,21 +39,41 @@ export class TodosRepository extends BaseRepository {
     ]);
   }
 
-  async addTodos(userId: string, todos: string[]) {
+  async addTodo(
+    userId: string,
+    todo: {
+      context: string;
+      file_src?: string;
+      expires_at?: string;
+      expired?: boolean;
+    }
+  ) {
     return this.dbAccess('todos')
-      .insert(todos.map((content) => ({ content, user_id: userId })))
-      .returning('id');
+      .insert([{ id: uuid(), user_id: userId, ...todo }])
+      .returning('*');
   }
 
-  async updateTodo(todoId: string, userId: string, newProps: { content: string; file_src: string; meta: any}) {
+  async updateTodo(
+    todoId: string,
+    userId: string,
+    newProps: {
+      content?: string;
+      file_src?: string;
+      expires_at?: string;
+      expired?: boolean;
+    }
+  ) {
+    const { content, expires_at, file_src, expired } = newProps;
     return this.dbAccess('todos')
       .update({
-        content: newProps.content,
-        file_src: newProps.file_src,
-        meta: newProps.meta,
+        content,
+        file_src,
+        expires_at,
+        expired,
       })
       .where('id', todoId)
-      .andWhere('user_id', userId);
+      .andWhere('user_id', userId)
+      .returning('*');
   }
 
   async removeTodo(todoId: string, userId: string) {
@@ -63,12 +85,7 @@ export class TodosRepository extends BaseRepository {
 
   async setExpiredTodos() {
     return this.dbAccess('todos')
-      .whereRaw(`(meta->>'expires_at')::timestamp < now()`)
-      .update({
-        meta: this.dbAccess.raw(
-          `jsonb_set(meta, '{expired}', 'true'::jsonb, true)`
-        ),
-      })
-      .returning('*');
+      .where('expires_at', '<', new Date())
+      .update({ expired: true });
   }
 }

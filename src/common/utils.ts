@@ -66,6 +66,24 @@ const camelToSnake = (data) => {
   return data;
 }
 
+/**
+ * Recursively converts object keys from snake_case to camelCase.
+ *
+ * @param {Object|Array} data - The input data to convert.
+ * @returns {Object|Array} - The converted data with camelCase keys.
+ */
+const snakeToCamel = (data) => {
+  if (_.isArray(data)) {
+    return data.map(item => snakeToCamel(item));
+  } else if (_.isObject(data) && !_.isDate(data) && !_.isRegExp(data)) {
+    return _.transform(data, (result, value, key) => {
+      const camelKey = _.camelCase(key);
+      result[camelKey] = snakeToCamel(value);
+    }, {});
+  }
+  return data;
+}
+
 export {
   getRoleCode,
   getHashedValue,
@@ -74,4 +92,5 @@ export {
   defaultResponseHandler,
   stringifyError,
   camelToSnake,
+  snakeToCamel,
 };

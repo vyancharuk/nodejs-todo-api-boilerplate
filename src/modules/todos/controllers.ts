@@ -49,7 +49,7 @@ export const todoController = {
     userId: req['currentUser'].id,
     content: req.body.content,
     fileSrc: req.body.fileSrc,
-    meta: req.body.meta,
+    expiresAt: req.body.expiresAt,
   })),
 
   /**
@@ -63,7 +63,7 @@ export const todoController = {
     todoId: req.params.id,
     content: req.body.content,
     fileSrc: req.body.fileSrc,
-    meta: req.body.meta,
+    expiresAt: req.body.expiresAt,
   })),
 
   /**
