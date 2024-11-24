@@ -34,7 +34,10 @@ class BaseOperation {
       // read static ZOD property and parse
       return this.constructor['validationRules'].safeParse(params);
     }
-    return { data: null, error: null };
+    return {
+      data: null,
+      error: `"validationRules" property are missing in the service definition`,
+    };
   }
 
   // empty base implementation
@@ -43,8 +46,11 @@ class BaseOperation {
   async run(params: any): Promise<any> {
     const { data: validated, error } = this.validate(params);
 
-    if (error) {
-      throw new Error(JSON.stringify(error.format()));
+    if (typeof error === 'string') {
+      throw new Error(error);
+    } else if (error) {
+      // throw validation error
+      throw error;
     }
 
     const { userId } = validated || {};

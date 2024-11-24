@@ -116,5 +116,7 @@ export const usersController = {
    * @property {Function} getUsers
    * @returns {Function} - The controller function that retrieves a list of users.
    */
-  getUsers: createController(GetUsers),
+  getUsers: createController(GetUsers, (req: Request) => ({
+    userId: req['currentUser'].id,
+  })),
 };

@@ -1,4 +1,4 @@
-import { inject, injectable } from '../../common/types';
+import { inject, injectable, z } from '../../common/types';
 
 import Operation from '../../common/operation';
 import logger from '../../infra/loaders/logger';
@@ -12,12 +12,17 @@ import { BINDINGS } from '../../common/constants';
  */
 @injectable()
 export class GetUsers extends Operation {
+  static validationRules = z.object({
+    userId: z.string().uuid(), // validate UUID
+  });
+
   @inject(BINDINGS.UsersRepository)
   private _usersRepository: any;
 
-  async execute() {
+  async execute(validatedUserData) {
+    const { userId } = validatedUserData;
     try {
-      logger.info(`GetUsers:execute`);
+      logger.info(`GetUsers:execute:userId=${userId}`);
 
       return this._usersRepository.findAll();
     } catch (error) {

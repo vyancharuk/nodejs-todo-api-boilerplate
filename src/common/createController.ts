@@ -12,6 +12,7 @@ import {
   NextFunction,
   Request,
   Response,
+  z,
 } from './types';
 import { defaultResponseHandler, getStatusForError } from './utils';
 
@@ -102,9 +103,7 @@ export const createController =
         transaction = parentTransaction;
       }
 
-      logger.info(
-        `createController:use transaction=${!!transaction}`
-      );
+      logger.info(`createController:use transaction=${!!transaction}`);
 
       const service: Operation = container.resolve(serviceConstructor);
 
@@ -115,9 +114,7 @@ export const createController =
         const repositories = service.getRepositories();
         repositories.forEach((repo) => repo.setDbAccess(transaction!));
 
-        logger.info(
-          `createController:repositories=${repositories.length}`
-        );
+        logger.info(`createController:repositories=${repositories.length}`);
       }
 
       const params = await paramsCb(req, res);
@@ -137,21 +134,31 @@ export const createController =
 
       return resCb(res, { result, code: HTTP_STATUS.OK }, req);
     } catch (ex) {
-      logger.error(
-        `createController:error ${ex} \r\n ${(ex as any).stack}`
-      );
+      logger.error(`createController:error ${ex} \r\n ${(ex as any).stack}`);
 
       if (!parentTransaction && transaction !== undefined) {
         logger.warn(`createController:transaction rollback`);
 
         await transaction.rollback();
       } else if (parentTransaction) {
-        logger.warn(
-          `createController:skip parentTransaction rollback`
-        );
+        logger.warn(`createController:skip parentTransaction rollback`);
       }
 
-      if (!(ex instanceof Error) && (ex as { msBeforeNext: number }).msBeforeNext) {
+      if (ex instanceof z.ZodError) {
+        return resCb(res, {
+          result: {
+            error: ex.errors.map((err) => ({
+              path: err.path.join('.'), // Path to the invalid property
+              message: err.message, // Validation error message
+            })),
+          },
+          code: HTTP_STATUS.BAD_REQUEST,
+        });
+      }
+      if (
+        !(ex instanceof Error) &&
+        (ex as { msBeforeNext: number }).msBeforeNext
+      ) {
         return resCb(res, {
           result: { error: 'TOO_MANY_REQUESTS' },
           code: HTTP_STATUS.TOO_MANY_REQUESTS,
@@ -214,4 +221,3 @@ const processRateLimiters = async (ipAddr, rateLimiters: any[]) => {
     currentRateLimiters,
   };
 };
-
