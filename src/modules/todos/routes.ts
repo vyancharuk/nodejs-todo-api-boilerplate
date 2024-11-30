@@ -35,6 +35,17 @@ export const todoRoutes = {
     handler: todoController.getUserTodos,
     middlewares: [isAuth, attachCurrentUser],
   },
+  /**
+   * Retrieves specific todo by id.
+   *
+   * @type {RouteConfig}
+   */
+  getTodoById: {
+    method: 'GET',
+    path: '/todos/:id',
+    handler: todoController.getTodoById,
+    middlewares: [isAuth, attachCurrentUser],
+  },
 
   /**
    * Retrieves all todos (Admin only).

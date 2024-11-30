@@ -39,6 +39,10 @@ export class TodosRepository extends BaseRepository {
     ]);
   }
 
+  async findById(id: string): Promise<Todo | undefined> {
+    return this.dbAccess<Todo>('todos').select('*').where('id', id).first();
+  }
+
   async addTodo(
     userId: string,
     todo: {

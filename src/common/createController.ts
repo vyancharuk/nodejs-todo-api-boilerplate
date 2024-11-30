@@ -14,7 +14,11 @@ import {
   Response,
   z,
 } from './types';
-import { defaultResponseHandler, getStatusForError } from './utils';
+import {
+  defaultResponseHandler,
+  getStatusForError,
+  formatValidationError,
+} from './utils';
 
 /**
  * Creates an express.js controller function for handling API requests.
@@ -134,8 +138,6 @@ export const createController =
 
       return resCb(res, { result, code: HTTP_STATUS.OK }, req);
     } catch (ex) {
-      logger.error(`createController:error ${ex} \r\n ${(ex as any).stack}`);
-
       if (!parentTransaction && transaction !== undefined) {
         logger.warn(`createController:transaction rollback`);
 
@@ -145,20 +147,20 @@ export const createController =
       }
 
       if (ex instanceof z.ZodError) {
+        logger.error(`createController:error=${formatValidationError(ex)}`);
         return resCb(res, {
-          result: {
-            error: ex.errors.map((err) => ({
-              path: err.path.join('.'), // Path to the invalid property
-              message: err.message, // Validation error message
-            })),
-          },
+          result: formatValidationError(ex),
           code: HTTP_STATUS.BAD_REQUEST,
+          message: ex.message,
         });
       }
       if (
         !(ex instanceof Error) &&
         (ex as { msBeforeNext: number }).msBeforeNext
       ) {
+        logger.error(
+          `createController:error:TOO_MANY_REQUESTS:=${JSON.stringify(ex)}`
+        );
         return resCb(res, {
           result: { error: 'TOO_MANY_REQUESTS' },
           code: HTTP_STATUS.TOO_MANY_REQUESTS,
@@ -172,10 +174,11 @@ export const createController =
           ],
         });
       }
+      logger.error(`createController:error ${ex} \r\n ${(ex as any).stack}`);
 
       return resCb(res, {
-        result: { error: (ex as any).toString() },
-        code: getStatusForError(ex),
+        result: { error: (ex as any).toString(), message: (ex as any).message },
+        code: (ex as any).status || getStatusForError(ex),
       });
     }
   };

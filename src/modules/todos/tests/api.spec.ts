@@ -35,6 +35,27 @@ describe('Todos API', () => {
     expect(response.body.result.length).toBe(5);
   });
 
+  it('Should correctly get todo by id', async () => {
+    const { ADMIN_JWT_TOKEN: jwtToken } = process.env;
+    const response = await addHeaders(
+      request.get(`/api/todos/${existingTodoUuid}`),
+      jwtToken
+    );
+
+    expect(response.status).toBe(HTTP_STATUS.OK);
+  });
+
+  it('Should handle non-existent todo id', async () => {
+    const { ADMIN_JWT_TOKEN: jwtToken } = process.env;
+    const response = await addHeaders(
+      request.get(`/api/todos/00000000-0000-0000-0000-000000000000`),
+      jwtToken
+    );
+
+    expect(response.status).toBe(HTTP_STATUS.NOT_FOUND);
+    expect(response.body.result.message).toBe('Todo not found');
+  });
+
   it('Should correctly load all todos', async () => {
     const { ADMIN_JWT_TOKEN: jwtToken } = process.env;
 

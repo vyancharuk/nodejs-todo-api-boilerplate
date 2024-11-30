@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import _ from 'lodash';
-import { UserRoles, HTTP_STATUS, Response } from './types';
+import { fromZodError } from 'zod-validation-error';
+import { UserRoles, HTTP_STATUS, Response, z } from './types';
 import appConfig from '../config/app';
 
 /**
@@ -84,6 +85,12 @@ const snakeToCamel = (data) => {
   return data;
 }
 
+const formatValidationError = (err: z.ZodError) => {
+  const validationError = fromZodError(err);
+
+  return validationError.toString();
+}
+
 export {
   getRoleCode,
   getHashedValue,
@@ -93,4 +100,5 @@ export {
   stringifyError,
   camelToSnake,
   snakeToCamel,
+  formatValidationError,
 };

@@ -6,6 +6,7 @@ import { GetUserTodos } from './getUserTodos.service';
 import { AddTodo } from './addTodo.service';
 import { UpdateTodo } from './updateTodo.service';
 import { RemoveTodo } from './removeTodo.service';
+import { GetTodoById } from './getTodoById.service'; 
 
 
 /**
@@ -24,6 +25,16 @@ export const todoController = {
     search: req.query.search,
     pageSize: req.query.pageSize,
     pageInd: req.query.pageInd,
+  })),
+
+  /**
+   * Retrieves specific todo by id.
+   *
+   * @param {Request} req - The HTTP request object.
+   * @returns {Promise<Todo>} A promise that resolves to todo object.
+   */
+  getTodoById: createController(GetTodoById, (req: Request) => ({
+    todoId: req.params.id,
   })),
 
   /**
