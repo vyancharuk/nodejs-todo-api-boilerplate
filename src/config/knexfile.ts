@@ -6,11 +6,24 @@ type KnexConfig = {
   [key: string]: any;
 };
 
+const useSqliteDb = process.env.USE_SQLITE_DB === 'true';
+
 const config: KnexConfig = {
-  client: 'pg',
-  debug: true,
+  client: useSqliteDb ? 'sqlite3' : 'pg',
+  connection: useSqliteDb
+    ? {
+        filename: path.resolve(__dirname + '/../../') + '/test.sqlite3',
+      }
+    : appConfig.databaseURL,
+  // sqlite specific settings
+  ...(useSqliteDb
+    ? {
+        useNullAsDefault: true,
+      }
+    : {}),
+  // skip knex debug output when necessary
+  debug: process.env.DEBUG !== 'false',
   asyncStackTraces: true,
-  connection: appConfig.databaseURL,
   pool: {
     min: 1,
     max: 4,

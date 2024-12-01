@@ -4,28 +4,22 @@ import config from '../../config/app';
 
 const transports: winston.transports.ConsoleTransportInstance[] = [];
 
-const customFormat = winston.format.printf(
-  ({ level, message, timestamp }) => {
-    const traceId = rTracer.id() || 'NO-TRACE-ID';
-    return `${level} ${timestamp} [${traceId}] ${message}`;
-  }
-);
+const customFormat = winston.format.printf(({ level, message, timestamp }) => {
+  const traceId = rTracer?.id?.();
+  return `${level} ${timestamp}${traceId ? ` [${traceId}]` : ''} ${message}`;
+});
 
-if (config.env === 'test') {
-  transports.push(new winston.transports.Console());
-} else {
-  transports.push(
-    new winston.transports.Console({
-      level: 'info',
-      handleExceptions: true,
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.timestamp({ format: 'MM/DD HH:mm:ss:SSS' }),
-        customFormat
-      ),
-    })
-  );
-}
+transports.push(
+  new winston.transports.Console({
+    level: config.env === 'test' ? 'error' : 'info',
+    handleExceptions: true,
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.timestamp({ format: 'MM/DD HH:mm:ss:SSS' }),
+      customFormat
+    ),
+  })
+);
 
 const loggerInstance = winston.createLogger({
   level: config.logs.level,

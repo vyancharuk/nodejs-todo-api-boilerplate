@@ -45,6 +45,11 @@ How to run tests in separate docker containers locally:
 1. Install dependencies locally `npm i`
 2. Run API tests in separate docker containers `npm run docker:test`
 
+How to run tests locally with a local SQLite DB:
+
+1. Install dependencies locally `npm i`
+2. Execute API tests using a local SQLite DB that stores data in a file: `npm run local:test`
+
 
 ### Application structure
 
@@ -99,6 +104,7 @@ List of available routes:
 **Todo routes**:\
 `POST /api/todos` - create new todo\
 `PUT /api/todos/:todoId` - update todo\
+`GET /api/todos/:todoId` - get specific todo\
 `GET /api/todos/my` - get all users' todos\
 `DELETE /api/todos/:todoId` - delete user\
 `GET /api/todos` - get all created todos (requires admin access rights)
