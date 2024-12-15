@@ -1,7 +1,7 @@
 {
   "name": "nodejs-todo-api-boilerplate",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js and TypeScript REST API boilerplate",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=prod node dist/server.js",
@@ -32,6 +32,7 @@
     "inversifyjs"
   ],
   "author": "v.yancharuk@gmail.com",
+  "license": "MIT",
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",
     "@types/cors": "^2.8.17",

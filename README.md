@@ -1,12 +1,33 @@
-# Node.js Typescript Template Project
+# LLM-Codegen for Node.js API template
 
 ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-brightgreen) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/)
+
+## Description
+LLM-Codegen helps generate clean, well-structured CRUD module code for the [Node.js API Typescript Template Project](#nodejs-api-typescript-template-project) using LLM-driven code generation.
+
+
+### Prerequisites
+You need Node.js and npm installed, along with a valid LLM provider API key set in `.env` (e.g., OPENAI_API_KEY). You can choose from OpenAI, Anthropic/Claude, or OpenRouter/LLama.
+
+### How to run?
+First, navigate to the `llm-codegen` folder and run `npm install` to install dependencies. Then execute `npm run start` and provide the requested module details when prompted. Finally, after generation completes, integrate the generated code into your Node.js API template project.
+
+### How LLM-Codegen works?
+It orchestrates 3 LLM micro-agents (Developer, Troubleshooter, TestsFixer) to generate code, fix compilation errors, and ensure passing E2E tests. The process includes module code generation, DB migration creation, seeding data, and running tests to validate output. By cycling through these steps, it guarantees consistent and production-ready CRUD code aligned with vertical slicing architecture.
+
+### How LLM-codegen differs from other AI coding tools (copilots, GPT)
+Unlike general-purpose copilots or AI/GPT engineers, LLM-codegen focuses solely on backend CRUD code generation while enforcing enforcing strict vertical slicing architecture. As a result, it produces compilable, maintainable, and production-ready code with validated E2E tests.
+
+
+---
+
+# Node.js API Typescript Template Project
 
 ## Description
 
 This project is a simple Node.js boilerplate using TypeScript and Docker. It demonstrates vertical slicing architecture for a REST API, as detailed here: [https://markhneedham.com/blog/2012/02/20/coding-packaging-by-vertical-slice/](https://markhneedham.com/blog/2012/02/20/coding-packaging-by-vertical-slice/). Unlike horizontal slicing (layered architecture), vertical slicing reduces the model code gap, making the modeled domain easier to understand. The implementation also follows the principles of Clean Architecture by Uncle Bob: [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
-The application provides APIs for users to view, create, update, and delete todos (CRUD operations)
+The application provides APIs for users to get, create, update, and delete Todo (CRUD operations)
 
 ## Features
 
