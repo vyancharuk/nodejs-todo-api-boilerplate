@@ -19,6 +19,8 @@ It orchestrates 3 LLM micro-agents (Developer, Troubleshooter, TestsFixer) to ge
 Unlike general-purpose copilots or AI/GPT engineers, LLM-codegen focuses solely on backend CRUD code generation while enforcing enforcing strict vertical slicing architecture. As a result, it produces compilable, maintainable, and production-ready code with validated E2E tests.
 
 
+![LLMCodegenDemo](./llm-codegen/LLMCodegenDemo.gif)
+
 ---
 
 # Node.js API Typescript Template Project
