@@ -1,4 +1,4 @@
-# LLM-Powered Node.js API template - LLM-Codegen
+# LLM-Powered Node.js API template: LLM-Codegen
 
 ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-brightgreen) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/)
 
@@ -7,16 +7,13 @@ LLM-Codegen helps generate clean, well-structured CRUD module code for the [Node
 
 
 ### Prerequisites
-You need Node.js and npm installed, along with a valid LLM provider API key set in `.env` (e.g., OPENAI_API_KEY). You can choose from OpenAI, Anthropic/Claude, or OpenRouter/LLama.
+You need Node.js and npm installed, along with a valid LLM provider API key set in `.env` (e.g., `OPENAI_API_KEY`). You can choose from OpenAI, Anthropic/Claude, or OpenRouter/LLama.
 
 ### How to run?
 First, navigate to the `llm-codegen` folder and run `npm install` to install dependencies. Then execute `npm run start` and provide the requested module details when prompted. Finally, after generation completes, integrate the generated code into your Node.js API template project.
 
 ### How LLM-Codegen works?
-It orchestrates 3 LLM micro-agents (Developer, Troubleshooter, TestsFixer) to generate code, fix compilation errors, and ensure passing E2E tests. The process includes module code generation, DB migration creation, seeding data, and running tests to validate output. By cycling through these steps, it guarantees consistent and production-ready CRUD code aligned with vertical slicing architecture.
-
-### How LLM-codegen differs from other AI coding tools (copilots, GPT)
-Unlike general-purpose copilots or AI/GPT engineers, LLM-codegen focuses solely on backend CRUD code generation while enforcing enforcing strict vertical slicing architecture. As a result, it produces compilable, maintainable, and production-ready code with validated E2E tests.
+It orchestrates 3 LLM micro-agents (`Developer`, `Troubleshooter` and `TestsFixer`) to generate code, fix compilation errors, and ensure passing E2E tests. The process includes module code generation, DB migration creation, seeding data, and running tests to validate output. By cycling through these steps, it guarantees consistent and production-ready CRUD code aligned with vertical slicing architecture.
 
 
 ![LLMCodegenDemo](./llm-codegen/LLMCodegenDemo.gif)
