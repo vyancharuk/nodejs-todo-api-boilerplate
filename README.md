@@ -1,4 +1,4 @@
-# LLM-Codegen for Node.js API template
+# LLM-Powered Node.js API template - LLM-Codegen
 
 ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-brightgreen) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/)
 
