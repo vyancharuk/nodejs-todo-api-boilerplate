@@ -3,7 +3,7 @@
 ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-brightgreen) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/)
 
 ## Description
-Helps to generate clean, well-structured CRUD module code for the [Node.js API Typescript Template Project](#nodejs-api-typescript-template-project) using LLM-driven code generation.
+An LLM-powered code generation tool that relies on the built-in [Node.js API Typescript Template Project](#nodejs-api-typescript-template-project) to easily generate clean, well-structured CRUD module code from text description.
 
 
 ### Prerequisites
