@@ -7,13 +7,14 @@ An LLM-powered code generation tool that relies on the built-in [Node.js API Typ
 
 
 ### Prerequisites
-You need Node.js and npm installed, along with a valid LLM provider API key set in `.env` (e.g., `OPENAI_API_KEY`). You can choose from OpenAI, Anthropic/Claude, or OpenRouter/LLama.
+You need Node.js and npm installed, along with a valid LLM provider API key set in `.env` (e.g., `OPENAI_API_KEY`). You can choose one from the following list: OpenAI, Anthropic/Claude, DeepSeek, or OpenRouter/Llama.
+
+### How it works?
+It orchestrates 3 LLM micro-agents (`Developer`, `Troubleshooter` and `TestsFixer`) to generate code, fix compilation errors, and ensure passing E2E tests. The process includes module code generation, DB migration creation, seeding data, and running tests to validate output. By cycling through these steps, it guarantees consistent and production-ready CRUD code aligned with vertical slicing architecture. It uses OpenAI/Anthropic/DeepSeek/Llama LLM API to perform code-generation
 
 ### How to run?
 First, navigate to the `llm-codegen` folder and run `npm install` to install dependencies. Then execute `npm run start` and provide the requested module details when prompted. Finally, after generation completes, integrate the generated code into your Node.js API template project.
 
-### How it works?
-It orchestrates 3 LLM micro-agents (`Developer`, `Troubleshooter` and `TestsFixer`) to generate code, fix compilation errors, and ensure passing E2E tests. The process includes module code generation, DB migration creation, seeding data, and running tests to validate output. By cycling through these steps, it guarantees consistent and production-ready CRUD code aligned with vertical slicing architecture.
 
 
 ![LLMCodegenDemo](./llm-codegen/LLMCodegenDemo.gif)

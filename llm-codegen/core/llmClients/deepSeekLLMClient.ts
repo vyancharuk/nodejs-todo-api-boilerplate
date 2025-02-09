@@ -5,29 +5,22 @@ import logger from '../logger';
 import { delay } from '../utils';
 import { BaseLLMClient } from './baseLLMClient';
 
-const OPEN_ROUTER_APP_NAME = 'LLM-CODEGEN-NODEJS-BOILERPLATE-VY';
-const OPEN_ROUTER_LLAMA_405B_MODEL_ID =
-  'nousresearch/hermes-3-llama-3.1-405b:free';
+const DEEP_SEEK_BASE_URL = 'https://api.deepseek.com';
+const DEEP_SEEK_CHAT_MODEL_ID = 'deepseek-chat';
 
 /**
- * @class OpenRouterLLMClient
+ * @class DeepSeek LLM client
  *
- * The OpenRouterLLMClient class interacts with OpenRouter's LLM API.
- * OpenRouter normalizes requests and responses across different LLM providers, ensuring consistent interaction.
- * It sends prompts to the specified OpenRouter model and retrieves the generated responses.
- * The client includes retry logic to handle transient server errors, ensuring reliable communication with the API.
+ * The DeepSeekLLMClient class interacts with DeepSeek's chat API.
  */
-export class OpenRouterLLMClient extends BaseLLMClient {
+export class DeepSeekLLMClient extends BaseLLMClient {
   openai: OpenAI;
 
   constructor() {
     super();
     this.openai = new OpenAI({
-      baseURL: 'https://openrouter.ai/api/v1',
-      apiKey: process.env.OPEN_ROUTER_API_KEY,
-      defaultHeaders: {
-        'X-Title': OPEN_ROUTER_APP_NAME,
-      },
+      baseURL: DEEP_SEEK_BASE_URL,
+      apiKey: process.env.DEEP_SEEK_API_KEY,
     });
   }
 
@@ -39,7 +32,7 @@ export class OpenRouterLLMClient extends BaseLLMClient {
   ): Promise<{ content: string; inputTokens?: number; outputTokens?: number }> {
     try {
       const completion = await this.openai.chat.completions.create({
-        model: OPEN_ROUTER_LLAMA_405B_MODEL_ID,
+        model: DEEP_SEEK_CHAT_MODEL_ID,
         messages: [
           {
             role: 'user',
@@ -54,7 +47,7 @@ export class OpenRouterLLMClient extends BaseLLMClient {
         outputTokens: completion.usage?.completion_tokens,
       };
     } catch (ex) {
-      logger.error(`OpenRouterLLMClient:execute:retry=${retry}:ex=`, ex);
+      logger.error(`DeepSeekLLMClient:execute:retry=${retry}:ex=`, ex);
 
       if (retry < 5) {
         // wait random seconds

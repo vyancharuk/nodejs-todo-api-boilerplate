@@ -6,6 +6,7 @@ import { AnthropicLLMClient } from '../llmClients/anthropicLLMClient';
 import { BaseLLMClient } from '../llmClients/baseLLMClient';
 import { OpenAILLMClient } from '../llmClients/openAILLMClient';
 import { OpenRouterLLMClient } from '../llmClients/openRouterLLMClient';
+import { DeepSeekLLMClient } from '../llmClients/deepSeekLLMClient';
 import logger from '../logger';
 import {
   capitalizeFirstLetter,
@@ -47,13 +48,27 @@ export class BaseAgent {
     // create appropriate LLM client
     if (process.env.OPENAI_API_KEY) {
       this.llmClient = new OpenAILLMClient();
+      logger.info(
+        `${this.constructor.name.toLowerCase()}:using OpenAI LLM`
+      );
     } else if (process.env.CLAUDE_API_KEY) {
       this.llmClient = new AnthropicLLMClient();
+      logger.info(
+        `${this.constructor.name.toLowerCase()}:using Anthropic LLM`
+      );
     } else if (process.env.OPEN_ROUTER_API_KEY) {
       this.llmClient = new OpenRouterLLMClient();
+      logger.info(
+        `${this.constructor.name.toLowerCase()}:using OpenRouter LLM`
+      );
+    } else if (process.env.DEEP_SEEK_API_KEY) {
+      this.llmClient = new DeepSeekLLMClient();
+      logger.info(
+        `${this.constructor.name.toLowerCase()}:using DeepSeek LLM`
+      );
     } else {
       throw new Error(
-        'Provide API key for at least one LLM client - OpenAI, Anthropic or OpenRouter'
+        'Provide API key for at least one LLM client - OpenAI, Anthropic, DeepSeek or OpenRouter'
       );
     }
   }
