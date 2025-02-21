@@ -1,4 +1,4 @@
-# LLM-Powered Node.js API template
+# 🛠️ LLM-Powered Node.js CRUD API template
 
 ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-brightgreen) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/)
 
@@ -7,14 +7,13 @@ An LLM-powered code generation tool that relies on the built-in [Node.js API Typ
 
 
 ### Prerequisites
-You need Node.js and npm installed, along with a valid LLM provider API key set in `.env` (e.g., `OPENAI_API_KEY`). You can choose one from the following list: OpenAI, Anthropic/Claude, DeepSeek, or OpenRouter/Llama.
+Before you proceed, verify that Node.js and npm are installed, and update your `.env` file with a valid LLM provider API key (e.g., `OPENAI_API_KEY`). You may choose from providers like OpenAI, Claude, DeepSeek, or OpenRouter/Llama.
 
 ### How it works?
 It orchestrates 3 LLM micro-agents (`Developer`, `Troubleshooter` and `TestsFixer`) to generate code, fix compilation errors, and ensure passing E2E tests. The process includes module code generation, DB migration creation, seeding data, and running tests to validate output. By cycling through these steps, it guarantees consistent and production-ready CRUD code aligned with vertical slicing architecture. It uses OpenAI/Anthropic/DeepSeek/Llama LLM API to perform code-generation
 
 ### How to run?
-First, navigate to the `llm-codegen` folder and run `npm install` to install dependencies. Then execute `npm run start` and provide the requested module details when prompted. Finally, after generation completes, integrate the generated code into your Node.js API template project.
-
+First, navigate to the root `./llm-codegen` folder and run `npm install` to install dependencies. Then execute `npm run start` and provide the requested module description when prompted. Finally, after the code generation finishes, review the output, and if the output meets your expectations, begin integrating it into your codebase
 
 
 ![LLMCodegenDemo](./llm-codegen/LLMCodegenDemo.gif)
