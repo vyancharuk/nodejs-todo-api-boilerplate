@@ -1,8 +1,7 @@
-version: '3'
+version: '3.8'
 
 services:
   td-app:
-    container_name: td-app
 
     build:
       context: .
@@ -29,10 +28,8 @@ services:
       - td-redis
 
   td-db:
-    container_name: td-postgresql
 
-    image: postgres
-    build: .
+    image: postgres:latest
     restart: always
     command: -p 6432
     ports:
@@ -43,9 +40,8 @@ services:
       POSTGRES_DB: todo_db
 
   td-redis:
-    container_name: td-redis
 
-    image: redis
+    image: redis:latest
     ports:
       - '7379:7379'
     volumes:

@@ -12,4 +12,5 @@ module.exports = {
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$',
   ],
+  testEnvironment: 'node'
 };

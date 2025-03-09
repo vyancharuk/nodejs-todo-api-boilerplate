@@ -1,5 +1,9 @@
 # 🛠️ LLM-Powered Node.js CRUD API template
 
+<p align="center">
+  <img height="300" src="./llm-codegen/LLMCodegenLogo.png?raw=true" alt="LLM-Powered Node.js CRUD API template"></a>
+</p>
+
 ![node](https://img.shields.io/badge/node-v14.21.3--v20.15.1-brightgreen) ![npm](https://img.shields.io/badge/npm-v6.14.18-blue) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/)
 
 ## Description
